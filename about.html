@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write-ups - GHG White & Black Hat</title>
+  <style>
+body {
+  font-family: Georgia, serif;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 30px;
+  background: #fff;
+  color: #222;
+  line-height: 1.6;
+}
+nav {
+  display: flex; gap: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px; margin-bottom: 30px;
+  font-family: Arial, sans-serif; font-size: 14px;
+}
+nav a { text-decoration: none; color: #444; }
+nav a:hover { color: #000; }
+nav a.active { font-weight: bold; color: #000; }
+h1 { font-size: 26px; margin-bottom: 6px; }
+h2 { font-size: 20px; margin: 40px 0 6px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+h4 { font-size: 15px; margin: 18px 0 4px; }
+p  { margin: 10px 0; font-size: 15px; }
+.subtitle { font-size: 14px; color: #666; margin-bottom: 16px; }
+.warning  { font-size: 13px; color: #a00; margin: 8px 0 16px; font-family: Arial, sans-serif; }
+code { font-family: monospace; font-size: 13px; background: #f4f2ef; padding: 1px 4px; border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Visualizations</a>
+  <a href="about.html" class="active">Write-ups</a>
+</nav>
+
+<h1>Write-ups</h1>
+<p class="subtitle">Design rationale, manipulation techniques, and AI usage for the GHG emissions visualizations.</p>
+
+<h2>White Hat Visualization</h2>
+
+<h4>Dataset</h4>
+<p>The dataset is sourced from the OECD Data Explorer and contains GHG emissions around the country. This dataset measures total GHG emissions excluding land-use, land-use change, and forestry (LULUCF), expressed in kilograms of CO2 equivalent per person per year. As all of the units are measured in kilograms of carbon dioxide equivalent, this allows for comparisons to be made easily of the different regions. The dataset spans from 2014 to 2023 and includes partner countries. Each record contains the fields such as the year, country, and emissions value, making it good for comparing countries in a single year and tracking changes over time. For the visualization of the whitehat, we decided to go with the 2023 data for country comparisons, while the 2014–2023 range is used to analyze trends over time with different countries such as Australia and Canada!</p>
+
+<h4>Data Transformations</h4>
+<p>Beyond the simple sorting and filtering that was conducted, we added these two computations to the dataset to extend the analytical value!</p>
+
+<h4>Percent change from 2014-2023</h4>
+<p>For all of the countries that are listed in the 2014 and 2023 observations, the percentage changes in emissions was calculated by doing the 2023 value minus the 2014 value times 100. This will now transform the two snapshots values into the rate-of-change metric which reveals the overall change in the past decade. This helps with the overall themes of the graphs while also giving more computational data for the reader. For example, we can see that Australia has a -12.4% change and Sweden has a -23.7% change! We can also see positive changes, where Turkiye had a 14.4% increase! This was all calculated using the original dataset and comparing the values. This small addition is very helpful for analyzing the dataset! We added these percentages to both the bar graph and the line graph!</p>
+
+<h4>Displayed-dataset average</h4>
+<p>The reference line on the bar chart is computed dynamically as the mean of all countries that actually appear in the 2023 chart. This is a dataset-specific aggregation which reflects exactly the set of countries visible on screen! The computed average is 8.4kg, which reveals an accurate benchmark that users can use to place individual countries without doing any arithmetics!</p>
+
+<h4>Design Choices</h4>
+<p>The bar chart is sorted by the highest to lowest emissions to make the visualization appealing to the user. Also, we have color coded it so that the dark red has the highest value, and the lower the value is, it becomes green! This color scheme relates to health, as red represents higher GHG emissions and worse for the planet, while green is healthier for the planet. There is included a reference line which calculates the average emissions across all of the displayed countries. This is useful for getting a sense of where countries fall in terms of GHG and can make conclusions about which areas are more clean. When the user hovers over the bar, it displays the country and the exact amount of emissions in kilograms!</p>
+
+<p>The line chart covers the full window from 2014 to 2023 and also uses a zero-based y-axis so trends appear proportionally accurate. Seven countries were selected to represent a range of regions and emission levels. We did not want to overpopulate the line chart because that would be too overwhelming to look at, so we decided to split them into different categories. The high emitters like Australia and Canada are seen at the top, the mid-range emitters are Germany and Japan, and lower emitters included were France, the United Kingdom, and Sweden. The lines corresponding to the country are labeled on the right side for formatting techniques. Included for each line are dots which makes it easier to see what data corresponds to the year. Furthermore, you can hover over the line chart to see the tooltip which displays the country and kg value from that year!</p>
+
+<h4>Titles & Labels</h4>
+<p>Every chart carries a descriptive title and a subtitle with the specific measure and units, axis labels with units, and tick labels for the bar chart to prevent overlap. The line chart labels each country at the end of its line rather than in a separate legend which gets rid of the need of the viewer looking back and forth. The computed percent change labels are positioned below the country name, but we also added a connecting line to make it readable for the user. With Germany and France for example, they are very close in values and the text overlapped, so we made sure to add this line and make it the same color. The bar chart tooltip displays the numeric value and its percent change since 2014. This provides precision without cluttering the static view and adds more vital information to the user.</p>
+
+<h4>What the Data Shows</h4>
+<p>For the bar chart, Australia, Canada, and Kazakhstan stand out as the highest per-capita emitters among the countries in this dataset, all exceeding 17 kg CO₂e per person. Most European countries cluster between 6 and 10 kg, while the lower-income countries fall well below 6 kg. We can see that larger countries typically have higher values while smaller countries such as Latvia and Malta are lower on the spectrum. Also, this distribution shows the differences between countries are not uniformly distributed! Many countries are grouped in the middle, which reveals that there are a few high-emitting countries and the majority of countries are within a similar emissions range!</p>
+
+<p>When looking at the line chart and seeing over the decade, all seven of the countries show a gradual downward trend, with a sharp dip in 2020 driven by the COVID-19 pandemic and a rebound in 2021 onward. During this COVID-19 period, there was a reduction in industrial activity including travel restrictions and economic slowdowns. After 2020, the rise in 2021 showed society going back to the normal values. From 2014-2019, all of the countries in the diagram stay consistent with their values and overall, we can see that there is no dramatic change over the years, again a part of 2020. Hopefully in the future as there will be more electric vehicles and healthier methods of transportation, these values can continue to decrease over time!</p>
+
+<h2>Black Hat Visualization</h2>
+
+<h4>Technique 1: Selective Filtering (Cherry-Picking)</h4>
+<p>The black hat bar chart shows only 8 countries, which are Sweden, Malta, Switzerland, Portugal, Latvia, Hungary, United Kingdom, and France! These are all low-emitting European nations with France having the most at 5.65kg. When selecting these countries, the visualization creates the impression that the emissions are pretty low across the leading countries. The viewers may be unfamiliar with the broader dataset which may conclude that the European countries represent the global performance, even though there are actually larger countries that commit higher-emission levels! This misleads the user if they are not careful with the information that they are looking at and just assumes off the small portion size. This bar chart is deceptive with containing a selective part of European nations with the subtle filtering to enhance the false impressions of the countries being leaders in global performance. In reality, European countries are actually below-average when compared to other countries around the world.</p>
+
+<h4>Technique 2: Truncated Y-Axis</h4>
+<p>The y-axis on the bar chart is above zero, which is not optimal for bar graphs, especially when the smallest value of Sweden is 4.21. This scaling method deceptively amplifies the visual differences between the countries that are considered to be moderate in level. This diagram begins very close to the minimum value in the cherry-picked subset, which makes there be a far more dramatic difference between the countries instead of the reality. For example, Sweden is at 4.21 and compared to Latvia it looks like a way bigger difference, but Latvia is only 5.30. A difference of 1kg is not big but with the bar graph, the difference seems way bigger. Similar to France’s 5.65kg, that is only a 1.44kg difference. In reality, we know that Australia has 19.93kg, which in fact is a big difference! Nothing on the bar graph explicitly tells the viewer the baseline is not zero, so many readers will be misled by the proportions of the bars. While the information is technically correct, this subtle manipulation creates the values appear much larger than they are!</p>
+
+<h4>Technique 3: Misleading Titles and Framing</h4>
+<p>The titles of both charts make use of emotionally charged language which frames the data in a different manner. This bar chart is annotated with "These nations lead global climate performance," and the line chart reads "Emissions COLLAPSING — European climate action is working!" With these dramatic word choices, these statements imply a sharp and sudden drop in emissions! However, the actual decline is modest and partly caused by the 2020 pandemic due to COVID-19. This was an external economic shock rather than policy success. Emotionally charged language like this shapes how viewers interpret the data before they even look at the numbers. These statements can draw the attention of the reader immediately before they start to analyze the different data and shape their opinions. We also made them in red so they can stick out and the objective was to look at that before the data. However, this is also more subtle because these are not completely large and they are deceptive towards the reader to draw their attention. If we made the text extremely large, it would be more obvious that something suspicious was happening.</p>
+
+<h4>Technique 4: Compressed Time Range and Zoomed Y-Axis</h4>
+<p>The line chart covers only 2018 to 2023 instead of the full 2014–2023 window available in the dataset of the whitehat! The compressed range definitely shows the steepest part in 2018, which was right before the pandemic dip. This exaggerates the visual impact of the decline  and makes progress look more dramatic. When combining this with the y-axis, it is zoomed to span only the range of values in the cherry-picked subset, rather than starting at zero. This visualization shows off the short-term trend while also hiding the broad context and makes the data out of proportion. This deception tool is used to manipulate the user to see the short-term declines and the subtle compression exaggerates the changes during the 2020 time period. A 1 kg drop on this zoomed axis looks like a dramatic plunge. The same data plotted on the zero-based axis from 2014 would basically appear as a flat line.</p>
+
+<h4>Technique 5: Inverted Color Encoding</h4>
+<p>The warm gradient of colors with the red, orange, and yellow, is associated with danger or something negative. When this is paired with the low-emitting subset, this color palette is dramatized due to the values being dangerously higher. Meanwhile, the highest-emitting countries are absent in the table, causing the user to be distracted from this fact. This was a subtle design choice as we would use brighter colors that signify low values such as green! This can be deceptive to the audience if they are glancing at the diagram at first glance, especially with the combination of the misleading title.</p>
+
+<h4>Overall Effect:</h4>
+<p>All of these techniques above are both subtle and deceptive, where the visualization appears to be trustworthy and visually appealing to the user. However, when further analyzing the visuals, they reveal how small design choices can alter the perception of data. Even though the data is all correct and nothing was altered from the original data, we can tell the reader a different story. With the combination of selective filtering, truncating the y-axis, misleading titles and frames, compressed time ranges, and confusing colors, we can mislead the audience without altering the dataset.</p>
+
+<h2>AI Usage</h2>
+<p>With this assignment, Claude was used to brainstorm the interaction ideas and troubleshoot some implementation issues. Suggestions from AI were created to suit the greenhouse gas dataset and achieve the interactive features. AI was used to accelerate the development process but did not replace the manual coding and the entire debugging process. Also, we used lab examples and previous outside knowledge such as CMSC 335 (Web Application Development with JavaScript), and our internship experiences to create this webpage!</p>
+
+</body>
+</html>
