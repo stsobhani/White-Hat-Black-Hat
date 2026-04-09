@@ -1,3 +1,4 @@
+/* The page layout and basic styling*/
 body {
   font-family: Georgia, serif;
   max-width: 960px;
@@ -8,6 +9,7 @@ body {
   line-height: 1.6;
 }
 
+/* The navigation bar*/
 nav {
   display: flex;
   gap: 20px;
@@ -17,21 +19,61 @@ nav {
   font-family: Arial, sans-serif;
   font-size: 14px;
 }
+/* Navagation links*/
+nav a {
+  text-decoration: none;
+  color: #444;
+}
+/* Hover effect*/
+nav a:hover {
+  color: #000;
+}
+/* Active page link styling*/
+nav a.active {
+  font-weight: bold;
+  color: #000;
+}
 
-nav a { text-decoration: none; color: #444; }
-nav a:hover { color: #000; }
-nav a.active { font-weight: bold; color: #000; }
+/* Headings*/
+h1 {
+  font-size: 26px;
+  margin-bottom: 6px;
+}
+h2 {
+  font-size: 20px;
+  margin: 40px 0 6px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
+}
+h3 {
+  font-size: 15px;
+  margin: 0 0 4px;
+  font-weight: normal;
+  color: #333;
+}
+h4 {
+  font-size: 15px;
+  margin: 18px 0 4px;
+}
 
-h1 { font-size: 26px; margin-bottom: 6px; }
-h2 { font-size: 20px; margin: 40px 0 6px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
-h3 { font-size: 15px; margin: 0 0 4px; font-weight: normal; color: #333; }
-h4 { font-size: 15px; margin: 18px 0 4px; }
+/* The paragraphs and lists*/
+p {
+  margin: 10px 0;
+  font-size: 15px;
+}
+ul {
+  font-size: 15px;
+  margin: 6px 0 10px 20px;
+}
 
-p { margin: 10px 0; font-size: 15px; }
-ul { font-size: 15px; margin: 6px 0 10px 20px; }
+/* The subtitle text*/
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
+}
 
-.subtitle { font-size: 14px; color: #666; margin-bottom: 16px; }
-
+/* The linked styles as the button*/
 .writeup-link {
   display: inline-block;
   margin-top: 10px;
@@ -43,13 +85,31 @@ ul { font-size: 15px; margin: 6px 0 10px 20px; }
   border-radius: 3px;
   font-family: Arial, sans-serif;
 }
-.writeup-link:hover { background: #f5f5f5; }
+/* Hover effects for the button style!*/
+.writeup-link:hover {
+  background: #f5f5f5;
+}
 
-.warning { font-size: 13px; color: #a00; margin: 8px 0 16px; font-family: Arial, sans-serif; }
+/* Warning message styling */
+.warning {
+  font-size: 13px;
+  color: #a00;
+  margin: 8px 0 16px;
+  font-family: Arial, sans-serif;
+}
 
-.chart-block { margin-bottom: 44px; }
-.chart-caption { font-size: 12px; color: #888; font-family: Arial, sans-serif; margin-bottom: 8px; }
+/* The chart section layout*/
+.chart-block {
+  margin-bottom: 44px;
+}
+.chart-caption {
+  font-size: 12px;
+  color: #888;
+  font-family: Arial, sans-serif;
+  margin-bottom: 8px;
+}
 
+/* The tooltip styling when hovering over the graph*/
 #tooltip {
   position: fixed;
   pointer-events: none;

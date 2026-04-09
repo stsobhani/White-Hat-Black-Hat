@@ -1,419 +1,800 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>White Hat & Black Hat Project</title>
-  <style>
-body {
-  font-family: Georgia, serif;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 20px 30px;
-  background: #fff;
-  color: #222;
-  line-height: 1.6;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>White Hat & Black Hat Project</title>
+    <style>
+      body {
+        font-family: Georgia, serif;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 20px 30px;
+        background: #fff;
+        color: #222;
+        line-height: 1.6;
+      }
 
-nav {
-  display: flex;
-  gap: 20px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  margin-bottom: 30px;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-}
+      nav {
+        display: flex;
+        gap: 20px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+      }
 
-nav a { text-decoration: none; color: #444; }
-nav a:hover { color: #000; }
-nav a.active { font-weight: bold; color: #000; }
+      nav a {
+        text-decoration: none;
+        color: #444;
+      }
+      nav a:hover {
+        color: #000;
+      }
+      nav a.active {
+        font-weight: bold;
+        color: #000;
+      }
 
-h1 { font-size: 26px; margin-bottom: 6px; }
-h2 { font-size: 20px; margin: 40px 0 6px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
-h3 { font-size: 15px; margin: 0 0 4px; font-weight: normal; color: #333; }
-h4 { font-size: 15px; margin: 18px 0 4px; }
+      h1 {
+        font-size: 26px;
+        margin-bottom: 6px;
+      }
+      h2 {
+        font-size: 20px;
+        margin: 40px 0 6px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 6px;
+      }
+      h3 {
+        font-size: 15px;
+        margin: 0 0 4px;
+        font-weight: normal;
+        color: #333;
+      }
+      h4 {
+        font-size: 15px;
+        margin: 18px 0 4px;
+      }
 
-p { margin: 10px 0; font-size: 15px; }
-ul { font-size: 15px; margin: 6px 0 10px 20px; }
+      p {
+        margin: 10px 0;
+        font-size: 15px;
+      }
+      ul {
+        font-size: 15px;
+        margin: 6px 0 10px 20px;
+      }
 
-.subtitle { font-size: 14px; color: #666; margin-bottom: 16px; }
+      .subtitle {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 16px;
+      }
 
-.writeup-link {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 14px;
-  color: #444;
-  text-decoration: none;
-  border: 1px solid #aaa;
-  padding: 4px 12px;
-  border-radius: 3px;
-  font-family: Arial, sans-serif;
-}
-.writeup-link:hover { background: #f5f5f5; }
+      .writeup-link {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #444;
+        text-decoration: none;
+        border: 1px solid #aaa;
+        padding: 4px 12px;
+        border-radius: 3px;
+        font-family: Arial, sans-serif;
+      }
+      .writeup-link:hover {
+        background: #f5f5f5;
+      }
 
-.warning { font-size: 13px; color: #a00; margin: 8px 0 16px; font-family: Arial, sans-serif; }
+      .warning {
+        font-size: 13px;
+        color: #a00;
+        margin: 8px 0 16px;
+        font-family: Arial, sans-serif;
+      }
 
-.chart-block { margin-bottom: 44px; }
-.chart-caption { font-size: 12px; color: #888; font-family: Arial, sans-serif; margin-bottom: 8px; }
+      .chart-block {
+        margin-bottom: 44px;
+      }
+      .chart-caption {
+        font-size: 12px;
+        color: #888;
+        font-family: Arial, sans-serif;
+        margin-bottom: 8px;
+      }
 
-#tooltip {
-  position: fixed;
-  pointer-events: none;
-  background: #222;
-  color: #fff;
-  padding: 5px 9px;
-  border-radius: 3px;
-  font-size: 12px;
-  font-family: Arial, sans-serif;
-  opacity: 0;
-  transition: opacity 0.1s;
-  z-index: 999;
-}
+      #tooltip {
+        position: fixed;
+        pointer-events: none;
+        background: #222;
+        color: #fff;
+        padding: 5px 9px;
+        border-radius: 3px;
+        font-size: 12px;
+        font-family: Arial, sans-serif;
+        opacity: 0;
+        transition: opacity 0.1s;
+        z-index: 999;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html" class="active">Visualizations</a>
+      <a href="about.html">Write-Ups</a>
+    </nav>
 
-  </style>
-</head>
-<body>
+    <h1>Greenhouse Gas Emissions Per Capita: OECD Country Comparison</h1>
+    <p class="subtitle">
+      A visualization of Organization for Economic Co-operation and Development
+      (OECD) per-capita greenhouse gas emissions (2014–2023), showing how
+      different design choices can change interpretation of the same dataset.
+    </p>
+    <a class="writeup-link" href="about.html">Read the Write-Ups Here</a>
 
-<nav>
-  <a href="index.html" class="active">Visualizations</a>
-  <a href="about.html">Write-Ups</a>
-</nav>
+    <h2>White Hat Visualization</h2>
+    <p>
+      The charts below show all available countries honestly, using the
+      zero-based axis and a color scale where red is high emissions and green is
+      low.
+    </p>
 
-<h1>Greenhouse Gas Emissions Per Capita: OECD Country Comparison</h1>
-<p class="subtitle">A visualization of OECD per-capita greenhouse gas emissions (2014–2023), showing how different design choices can change interpretation of the same dataset.</p>
-<a class="writeup-link" href="about.html">Read the Write-Ups Here</a>
+    <div class="chart-block">
+      <h3>All Countries: GHG Emissions Per Capita (2023)</h3>
+      <p class="chart-caption">
+        kg CO2e per person | Sorted descending | Hover for values | Source: OECD
+        Air Emissions Inventories
+      </p>
+      <div id="white-bar"></div>
+    </div>
 
-<h2>White Hat Visualization</h2>
-<p>The charts below show all available countries honestly, using the zero-based axis and a color scale where red is high emissions and green is low.</p>
+    <div class="chart-block">
+      <h3>Trends Over Time - Selected Countries (2014-2023)</h3>
+      <p class="chart-caption">
+        kg CO2e per person | Y-axis starts at zero | Labels show percentage
+        change from 2014 | Hover for exact values
+      </p>
+      <div id="white-line"></div>
+    </div>
 
-<div class="chart-block">
-  <h3>All Countries: GHG Emissions Per Capita (2023)</h3>
-  <p class="chart-caption">kg CO&#8322;e per person | Sorted descending | Hover for values | Source: OECD Air Emissions Inventories</p>
-  <div id="white-bar"></div>
-</div>
+    <h2>Black Hat Visualization</h2>
+    <p class="warning">
+      &#9888; These charts are intentionally misleading for educational
+      purposes. See the <a href="about.html">write-ups</a> for a full
+      explanation.
+    </p>
+    <p>
+      The charts below use selective filtering, a truncated y-axis, and
+      misleading titles to create a false impression about global emissions
+      trends.
+    </p>
 
-<div class="chart-block">
-  <h3>Trends Over Time &mdash; Selected Countries (2014&ndash;2023)</h3>
-  <p class="chart-caption">kg CO&#8322;e per person | Y-axis starts at zero | Labels show % change from 2014 | Hover for exact values</p>
-  <div id="white-line"></div>
-</div>
+    <div class="chart-block">
+      <h3>European Nations Dominate Global Climate Progress</h3>
+      <p class="chart-caption">
+        Annual GHG emissions per capita | Selected Leading Nations | 2023
+      </p>
+      <div id="black-bar"></div>
+    </div>
 
-<h2>Black Hat Visualization</h2>
-<p class="warning">&#9888; These charts are intentionally misleading for educational purposes. See the <a href="about.html">Write-ups</a> for a full explanation.</p>
-<p>The charts below use selective filtering, a truncated y-axis, and misleading titles to create a false impression about global emissions trends.</p>
+    <div class="chart-block">
+      <h3>Europe's Dramatic Emissions Collapse Since 2018</h3>
+      <p class="chart-caption">Emissions trend for key European economies</p>
+      <div id="black-line"></div>
+    </div>
 
-<div class="chart-block">
-  <h3>European Nations Dominate Global Climate Progress</h3>
-  <p class="chart-caption">Annual GHG emissions per capita | "Selected leading nations" | 2023</p>
-  <div id="black-bar"></div>
-</div>
+    <div id="tooltip"></div>
 
-<div class="chart-block">
-  <h3>Europe&rsquo;s Dramatic Emissions Collapse Since 2018</h3>
-  <p class="chart-caption">Emissions trend for key European economies</p>
-  <div id="black-line"></div>
-</div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      // script.js — loads data from CSV, computes everything at runtime
 
-<div id="tooltip"></div>
+      const CSV_PATH =
+        "data/OECD.ENV.EPI,DSD_AIR_GHG@DF_AIR_GHG,+.A.GHG._T.KG_CO2E_PS.csv";
 
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script>
-// script.js — loads data from CSV, computes everything at runtime
+      const LINE_COUNTRIES = [
+        "Australia",
+        "Canada",
+        "Germany",
+        "France",
+        "United Kingdom",
+        "Sweden",
+        "Japan",
+      ];
+      const BH_BAR_COUNTRIES = [
+        "Sweden",
+        "Malta",
+        "Switzerland",
+        "Portugal",
+        "Latvia",
+        "Hungary",
+        "United Kingdom",
+        "France",
+      ];
+      const BH_LINE_COUNTRIES = [
+        "France",
+        "United Kingdom",
+        "Sweden",
+        "Portugal",
+      ];
+      const BH_LINE_LABELS = { "United Kingdom": "UK" };
 
-const CSV_PATH = "data/OECD.ENV.EPI,DSD_AIR_GHG@DF_AIR_GHG,+.A.GHG._T.KG_CO2E_PS.csv";
+      const LINE_COLORS = {
+        Australia: "#e07b39",
+        Canada: "#c0392b",
+        Germany: "#2c3e50",
+        France: "#2980b9",
+        "United Kingdom": "#16a085",
+        Sweden: "#27ae60",
+        Japan: "#d35400",
+      };
+      const BH_COLORS = {
+        France: "#e67e22",
+        "United Kingdom": "#e74c3c",
+        Sweden: "#9b59b6",
+        Portugal: "#c0392b",
+      };
 
-const LINE_COUNTRIES    = ["Australia","Canada","Germany","France","United Kingdom","Sweden","Japan"];
-const BH_BAR_COUNTRIES  = ["Sweden","Malta","Switzerland","Portugal","Latvia","Hungary","United Kingdom","France"];
-const BH_LINE_COUNTRIES = ["France","United Kingdom","Sweden","Portugal"];
-const BH_LINE_LABELS    = {"United Kingdom":"UK"};
+      // ── Tooltip ───────────────────────────────────────────────────────
+      const tip = document.getElementById("tooltip");
+      function showTip(html, evt) {
+        tip.innerHTML = html;
+        tip.style.opacity = 1;
+        moveTip(evt);
+      }
+      function moveTip(evt) {
+        tip.style.left = evt.clientX + 14 + "px";
+        tip.style.top = evt.clientY - 10 + "px";
+      }
+      function hideTip() {
+        tip.style.opacity = 0;
+      }
 
-const LINE_COLORS = {
-  "Australia":"#e07b39","Canada":"#c0392b","Germany":"#2c3e50",
-  "France":"#2980b9","United Kingdom":"#16a085","Sweden":"#27ae60","Japan":"#d35400"
-};
-const BH_COLORS = {
-  "France":"#e67e22","United Kingdom":"#e74c3c","Sweden":"#9b59b6","Portugal":"#c0392b"
-};
+      // ── SVG helper ────────────────────────────────────────────────────
+      function makeSvg(id, vw, vh, m) {
+        const g = d3
+          .select("#" + id)
+          .append("svg")
+          .attr("viewBox", "0 0 " + vw + " " + vh)
+          .style("width", "100%")
+          .style("display", "block")
+          .append("g")
+          .attr("transform", "translate(" + m.l + "," + m.t + ")");
+        return { g, W: vw - m.l - m.r, H: vh - m.t - m.b };
+      }
+      function gridlines(g, axFn, len) {
+        g.append("g")
+          .call(axFn.tickSize(-len).tickFormat(""))
+          .call((gr) => {
+            gr.select(".domain").remove();
+            gr.selectAll("line")
+              .attr("stroke", "#e0ddd8")
+              .attr("stroke-dasharray", "3,3");
+          });
+      }
 
-// ── Tooltip ───────────────────────────────────────────────────────
-const tip = document.getElementById("tooltip");
-function showTip(html,evt){tip.innerHTML=html;tip.style.opacity=1;moveTip(evt);}
-function moveTip(evt){tip.style.left=(evt.clientX+14)+"px";tip.style.top=(evt.clientY-10)+"px";}
-function hideTip(){tip.style.opacity=0;}
+      // ── Label collision avoidance ─────────────────────────────────────
+      function resolveLabels(slots, gap) {
+        slots.sort((a, b) => a.y - b.y);
+        for (let pass = 0; pass < 30; pass++) {
+          let moved = false;
+          for (let i = 1; i < slots.length; i++) {
+            const needed = slots[i - 1].y + slots[i - 1].h + gap;
+            if (slots[i].y < needed) {
+              slots[i].y = needed;
+              moved = true;
+            }
+          }
+          if (!moved) break;
+        }
+        return slots;
+      }
 
-// ── SVG helper ────────────────────────────────────────────────────
-function makeSvg(id,vw,vh,m){
-  const g=d3.select("#"+id).append("svg")
-    .attr("viewBox","0 0 "+vw+" "+vh)
-    .style("width","100%").style("display","block")
-    .append("g").attr("transform","translate("+m.l+","+m.t+")");
-  return {g,W:vw-m.l-m.r,H:vh-m.t-m.b};
-}
-function gridlines(g,axFn,len){
-  g.append("g").call(axFn.tickSize(-len).tickFormat(""))
-   .call(gr=>{gr.select(".domain").remove();gr.selectAll("line").attr("stroke","#e0ddd8").attr("stroke-dasharray","3,3");});
-}
+      // ── WHITE BAR ─────────────────────────────────────────────────────
+      function drawWhiteBar(byCountryYear) {
+        // Build 2023 snapshot and compute % change from 2014 for each country
+        const data = Object.keys(byCountryYear)
+          .filter((c) => byCountryYear[c][2023] != null)
+          .map((c) => {
+            const v2023 = byCountryYear[c][2023];
+            const v2014 = byCountryYear[c][2014];
+            const pct =
+              v2014 != null
+                ? Math.round(((v2023 - v2014) / v2014) * 1000) / 10
+                : null;
+            return { country: c, value: v2023, pct };
+          })
+          .sort((a, b) => b.value - a.value);
 
-// ── Label collision avoidance ─────────────────────────────────────
-function resolveLabels(slots,gap){
-  slots.sort((a,b)=>a.y-b.y);
-  for(let pass=0;pass<30;pass++){
-    let moved=false;
-    for(let i=1;i<slots.length;i++){
-      const needed=slots[i-1].y+slots[i-1].h+gap;
-      if(slots[i].y<needed){slots[i].y=needed;moved=true;}
-    }
-    if(!moved) break;
-  }
-  return slots;
-}
+        const maxVal = data[0].value;
+        const { g, W, H } = makeSvg("white-bar", 960, 420, {
+          l: 66,
+          r: 20,
+          t: 24,
+          b: 128,
+        });
+        const x = d3
+          .scaleBand()
+          .domain(data.map((d) => d.country))
+          .range([0, W])
+          .padding(0.2);
+        const y = d3
+          .scaleLinear()
+          .domain([0, maxVal * 1.08])
+          .range([H, 0]);
+        const colFn = (v) => d3.interpolateRdYlGn(1 - v / maxVal);
 
-// ── WHITE BAR ─────────────────────────────────────────────────────
-function drawWhiteBar(byCountryYear){
-  // Build 2023 snapshot and compute % change from 2014 for each country
-  const data = Object.keys(byCountryYear)
-    .filter(c => byCountryYear[c][2023] != null)
-    .map(c => {
-      const v2023 = byCountryYear[c][2023];
-      const v2014 = byCountryYear[c][2014];
-      const pct = (v2014 != null) ? Math.round(((v2023 - v2014) / v2014) * 1000) / 10 : null;
-      return {country:c, value:v2023, pct};
-    })
-    .sort((a,b)=>b.value-a.value);
+        gridlines(g, d3.axisLeft(y).ticks(6), W);
 
-  const maxVal = data[0].value;
-  const {g,W,H} = makeSvg("white-bar",960,420,{l:66,r:20,t:24,b:128});
-  const x = d3.scaleBand().domain(data.map(d=>d.country)).range([0,W]).padding(0.2);
-  const y = d3.scaleLinear().domain([0,maxVal*1.08]).range([H,0]);
-  const colFn = v => d3.interpolateRdYlGn(1-v/maxVal);
+        g.selectAll("rect.wb")
+          .data(data)
+          .enter()
+          .append("rect")
+          .attr("class", "wb")
+          .attr("x", (d) => x(d.country))
+          .attr("y", (d) => y(d.value))
+          .attr("width", x.bandwidth())
+          .attr("height", (d) => H - y(d.value))
+          .attr("fill", (d) => colFn(d.value))
+          .attr("rx", 1)
+          .on("mousemove", (evt, d) => {
+            const pctStr =
+              d.pct != null
+                ? "<br><span style='color:#aaa;font-size:11px'>" +
+                  d.pct +
+                  "% since 2014</span>"
+                : "";
+            showTip(
+              "<b>" +
+                d.country +
+                "</b><br>" +
+                d.value.toFixed(2) +
+                " kg CO\u2082e/person" +
+                pctStr,
+              evt,
+            );
+          })
+          .on("mouseleave", hideTip);
 
-  gridlines(g,d3.axisLeft(y).ticks(6),W);
+        // Average reference line computed from the filtered dataset
+        const avg = d3.mean(data, (d) => d.value);
+        g.append("line")
+          .attr("x1", 0)
+          .attr("x2", W)
+          .attr("y1", y(avg))
+          .attr("y2", y(avg))
+          .attr("stroke", "#2c3e50")
+          .attr("stroke-dasharray", "6,3")
+          .attr("stroke-width", 1.5);
+        g.append("text")
+          .attr("x", W - 4)
+          .attr("y", y(avg) - 5)
+          .attr("text-anchor", "end")
+          .style("font-size", "10px")
+          .style("fill", "#2c3e50")
+          .text("Average: " + avg.toFixed(2) + " kg");
 
-  g.selectAll("rect.wb").data(data).enter().append("rect")
-    .attr("class","wb")
-    .attr("x",d=>x(d.country)).attr("y",d=>y(d.value))
-    .attr("width",x.bandwidth()).attr("height",d=>H-y(d.value))
-    .attr("fill",d=>colFn(d.value)).attr("rx",1)
-    .on("mousemove",(evt,d)=>{
-      const pctStr = d.pct!=null ? "<br><span style='color:#aaa;font-size:11px'>"+d.pct+"% since 2014</span>" : "";
-      showTip("<b>"+d.country+"</b><br>"+d.value.toFixed(2)+" kg CO\u2082e/person"+pctStr,evt);
-    })
-    .on("mouseleave",hideTip);
+        g.append("g")
+          .attr("transform", "translate(0," + H + ")")
+          .call(d3.axisBottom(x))
+          .call((ax) => {
+            ax.select(".domain").attr("stroke", "#bbb");
+            ax.selectAll("text")
+              .attr("transform", "rotate(-45)")
+              .attr("text-anchor", "end")
+              .attr("dx", "-.5em")
+              .attr("dy", ".15em")
+              .style("font-size", "9px")
+              .style("fill", "#444");
+          });
+        g.append("g")
+          .call(
+            d3
+              .axisLeft(y)
+              .ticks(6)
+              .tickFormat((d) => d + " kg"),
+          )
+          .call((ax) => {
+            ax.select(".domain").remove();
+            ax.selectAll("text")
+              .style("font-size", "10px")
+              .style("fill", "#555");
+          });
+        g.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x", -H / 2)
+          .attr("y", -52)
+          .attr("text-anchor", "middle")
+          .style("font-size", "10px")
+          .style("fill", "#777")
+          .text("kg CO\u2082-equivalent per person (2023)");
+      }
 
-  // Average reference line computed from the filtered dataset
-  const avg = d3.mean(data,d=>d.value);
-  g.append("line").attr("x1",0).attr("x2",W).attr("y1",y(avg)).attr("y2",y(avg))
-    .attr("stroke","#2c3e50").attr("stroke-dasharray","6,3").attr("stroke-width",1.5);
-  g.append("text").attr("x",W-4).attr("y",y(avg)-5).attr("text-anchor","end")
-    .style("font-size","10px").style("fill","#2c3e50")
-    .text("Average: "+avg.toFixed(2)+" kg");
+      // ── WHITE LINE ────────────────────────────────────────────────────
+      function drawWhiteLine(byCountryYear) {
+        const allYears = [
+          2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023,
+        ];
 
-  g.append("g").attr("transform","translate(0,"+H+")").call(d3.axisBottom(x))
-    .call(ax=>{ax.select(".domain").attr("stroke","#bbb");
-      ax.selectAll("text").attr("transform","rotate(-45)").attr("text-anchor","end")
-        .attr("dx","-.5em").attr("dy",".15em").style("font-size","9px").style("fill","#444");});
-  g.append("g").call(d3.axisLeft(y).ticks(6).tickFormat(d=>d+" kg"))
-    .call(ax=>{ax.select(".domain").remove();ax.selectAll("text").style("font-size","10px").style("fill","#555");});
-  g.append("text").attr("transform","rotate(-90)").attr("x",-H/2).attr("y",-52)
-    .attr("text-anchor","middle").style("font-size","10px").style("fill","#777")
-    .text("kg CO\u2082-equivalent per person (2023)");
-}
+        // Only include countries that have data for every year in the range
+        const countries = LINE_COUNTRIES.filter(
+          (c) =>
+            byCountryYear[c] &&
+            allYears.every((yr) => byCountryYear[c][yr] != null),
+        );
 
-// ── WHITE LINE ────────────────────────────────────────────────────
-function drawWhiteLine(byCountryYear){
-  const allYears = [2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
+        let maxVal = 0;
+        for (const c of countries)
+          for (const yr of allYears)
+            if (byCountryYear[c][yr] > maxVal) maxVal = byCountryYear[c][yr];
 
-  // Only include countries that have data for every year in the range
-  const countries = LINE_COUNTRIES.filter(c =>
-    byCountryYear[c] && allYears.every(yr => byCountryYear[c][yr] != null)
-  );
+        const { g, W, H } = makeSvg("white-line", 960, 380, {
+          l: 68,
+          r: 175,
+          t: 24,
+          b: 50,
+        });
+        const x = d3.scaleLinear().domain([2014, 2023]).range([0, W]);
+        const y = d3
+          .scaleLinear()
+          .domain([0, maxVal * 1.08])
+          .range([H, 0]);
+        const lineGen = d3
+          .line()
+          .x((d) => x(d.yr))
+          .y((d) => y(d.val))
+          .curve(d3.curveMonotoneX);
 
-  let maxVal = 0;
-  for(const c of countries)
-    for(const yr of allYears)
-      if(byCountryYear[c][yr] > maxVal) maxVal = byCountryYear[c][yr];
+        gridlines(g, d3.axisLeft(y).ticks(6), W);
 
-  const {g,W,H} = makeSvg("white-line",960,380,{l:68,r:175,t:24,b:50});
-  const x = d3.scaleLinear().domain([2014,2023]).range([0,W]);
-  const y = d3.scaleLinear().domain([0,maxVal*1.08]).range([H,0]);
-  const lineGen = d3.line().x(d=>x(d.yr)).y(d=>y(d.val)).curve(d3.curveMonotoneX);
+        const series = countries.map((country) => {
+          const pts = allYears.map((yr) => ({
+            yr,
+            val: byCountryYear[country][yr],
+          }));
+          const col = LINE_COLORS[country] || "#888";
+          // Compute % change from 2014 to 2023 from actual CSV values
+          const v2014 = byCountryYear[country][2014];
+          const v2023 = byCountryYear[country][2023];
+          const pct =
+            v2014 != null && v2023 != null
+              ? Math.round(((v2023 - v2014) / v2014) * 1000) / 10
+              : null;
 
-  gridlines(g,d3.axisLeft(y).ticks(6),W);
+          g.append("path")
+            .datum(pts)
+            .attr("fill", "none")
+            .attr("stroke", col)
+            .attr("stroke-width", 2.2)
+            .attr("d", lineGen);
+          g.selectAll(".dot" + country.replace(/[\s()]/g, "_"))
+            .data(pts)
+            .enter()
+            .append("circle")
+            .attr("cx", (d) => x(d.yr))
+            .attr("cy", (d) => y(d.val))
+            .attr("r", 3)
+            .attr("fill", col)
+            .on("mousemove", (evt, d) =>
+              showTip(
+                "<b>" +
+                  country +
+                  "</b><br>" +
+                  d.yr +
+                  ": " +
+                  d.val.toFixed(2) +
+                  " kg CO\u2082e",
+                evt,
+              ),
+            )
+            .on("mouseleave", hideTip);
 
-  const series = countries.map(country => {
-    const pts = allYears.map(yr=>({yr, val:byCountryYear[country][yr]}));
-    const col = LINE_COLORS[country]||"#888";
-    // Compute % change from 2014 to 2023 from actual CSV values
-    const v2014 = byCountryYear[country][2014];
-    const v2023 = byCountryYear[country][2023];
-    const pct = (v2014 != null && v2023 != null)
-      ? Math.round(((v2023 - v2014) / v2014) * 1000) / 10
-      : null;
+          return { country, col, pts, pct, idealY: y(v2023) };
+        });
 
-    g.append("path").datum(pts).attr("fill","none").attr("stroke",col)
-      .attr("stroke-width",2.2).attr("d",lineGen);
-    g.selectAll(".dot"+country.replace(/[\s()]/g,"_")).data(pts).enter().append("circle")
-      .attr("cx",d=>x(d.yr)).attr("cy",d=>y(d.val)).attr("r",3).attr("fill",col)
-      .on("mousemove",(evt,d)=>showTip("<b>"+country+"</b><br>"+d.yr+": "+d.val.toFixed(2)+" kg CO\u2082e",evt))
-      .on("mouseleave",hideTip);
+        // Collision-resolve end labels (name 10px + pct 9px = ~22px block)
+        const BLOCK_H = 22;
+        const slots = series.map((s) => ({ y: s.idealY - 4, h: BLOCK_H }));
+        resolveLabels(slots, 3);
 
-    return {country, col, pts, pct, idealY: y(v2023)};
-  });
+        series.forEach((s, i) => {
+          const lx = x(2023);
+          const sy = slots[i].y;
+          g.append("line")
+            .attr("x1", lx + 3)
+            .attr("x2", lx + 7)
+            .attr("y1", s.idealY)
+            .attr("y2", sy + 8)
+            .attr("stroke", s.col)
+            .attr("stroke-width", 0.8)
+            .attr("opacity", 0.45);
+          g.append("text")
+            .attr("x", lx + 9)
+            .attr("y", sy + 8)
+            .style("font-size", "10px")
+            .style("fill", s.col)
+            .style("font-weight", "600")
+            .text(s.country);
+          if (s.pct != null) {
+            g.append("text")
+              .attr("x", lx + 9)
+              .attr("y", sy + 19)
+              .style("font-size", "9px")
+              .style("fill", s.col)
+              .style("opacity", "0.72")
+              .text(s.pct + "%");
+          }
+        });
 
-  // Collision-resolve end labels (name 10px + pct 9px = ~22px block)
-  const BLOCK_H = 22;
-  const slots = series.map(s=>({y:s.idealY-4, h:BLOCK_H}));
-  resolveLabels(slots,3);
+        g.append("g")
+          .attr("transform", "translate(0," + H + ")")
+          .call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(10))
+          .call((ax) => {
+            ax.select(".domain").attr("stroke", "#bbb");
+            ax.selectAll("text")
+              .style("font-size", "10px")
+              .style("fill", "#555");
+          });
+        g.append("g")
+          .call(
+            d3
+              .axisLeft(y)
+              .ticks(6)
+              .tickFormat((d) => d + " kg"),
+          )
+          .call((ax) => {
+            ax.select(".domain").remove();
+            ax.selectAll("text")
+              .style("font-size", "10px")
+              .style("fill", "#555");
+          });
+        g.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x", -H / 2)
+          .attr("y", -54)
+          .attr("text-anchor", "middle")
+          .style("font-size", "10px")
+          .style("fill", "#777")
+          .text("kg CO\u2082-equivalent per person");
+      }
 
-  series.forEach((s,i)=>{
-    const lx = x(2023);
-    const sy = slots[i].y;
-    g.append("line")
-      .attr("x1",lx+3).attr("x2",lx+7)
-      .attr("y1",s.idealY).attr("y2",sy+8)
-      .attr("stroke",s.col).attr("stroke-width",0.8).attr("opacity",0.45);
-    g.append("text").attr("x",lx+9).attr("y",sy+8)
-      .style("font-size","10px").style("fill",s.col).style("font-weight","600")
-      .text(s.country);
-    if(s.pct!=null){
-      g.append("text").attr("x",lx+9).attr("y",sy+19)
-        .style("font-size","9px").style("fill",s.col).style("opacity","0.72")
-        .text(s.pct+"%");
-    }
-  });
+      // ── BLACK BAR (misleading) ────────────────────────────────────────
+      function drawBlackBar(byCountryYear) {
+        const data = BH_BAR_COUNTRIES.filter(
+          (c) => byCountryYear[c] && byCountryYear[c][2023] != null,
+        )
+          .map((c) => ({ country: c, value: byCountryYear[c][2023] }))
+          .sort((a, b) => a.value - b.value);
 
-  g.append("g").attr("transform","translate(0,"+H+")").call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(10))
-    .call(ax=>{ax.select(".domain").attr("stroke","#bbb");ax.selectAll("text").style("font-size","10px").style("fill","#555");});
-  g.append("g").call(d3.axisLeft(y).ticks(6).tickFormat(d=>d+" kg"))
-    .call(ax=>{ax.select(".domain").remove();ax.selectAll("text").style("font-size","10px").style("fill","#555");});
-  g.append("text").attr("transform","rotate(-90)").attr("x",-H/2).attr("y",-54)
-    .attr("text-anchor","middle").style("font-size","10px").style("fill","#777")
-    .text("kg CO\u2082-equivalent per person");
-}
+        const { g, W, H } = makeSvg("black-bar", 640, 340, {
+          l: 74,
+          r: 20,
+          t: 36,
+          b: 72,
+        });
+        const yMin = d3.min(data, (d) => d.value) * 0.88;
+        const x = d3
+          .scaleBand()
+          .domain(data.map((d) => d.country))
+          .range([0, W])
+          .padding(0.28);
+        const y = d3
+          .scaleLinear()
+          .domain([yMin, d3.max(data, (d) => d.value) * 1.04])
+          .range([H, 0]);
+        const alarm = d3
+          .scaleSequential(d3.interpolateYlOrRd)
+          .domain([yMin, d3.max(data, (d) => d.value)]);
 
-// ── BLACK BAR (misleading) ────────────────────────────────────────
-function drawBlackBar(byCountryYear){
-  const data = BH_BAR_COUNTRIES
-    .filter(c => byCountryYear[c] && byCountryYear[c][2023] != null)
-    .map(c => ({country:c, value:byCountryYear[c][2023]}))
-    .sort((a,b)=>a.value-b.value);
+        gridlines(g, d3.axisLeft(y).ticks(5), W);
+        g.selectAll("rect.bb")
+          .data(data)
+          .enter()
+          .append("rect")
+          .attr("class", "bb")
+          .attr("x", (d) => x(d.country))
+          .attr("y", (d) => y(d.value))
+          .attr("width", x.bandwidth())
+          .attr("height", (d) => H - y(d.value))
+          .attr("fill", (d) => alarm(d.value))
+          .attr("rx", 2)
+          .on("mousemove", (evt, d) =>
+            showTip(d.country + ": " + d.value.toFixed(2) + " kg", evt),
+          )
+          .on("mouseleave", hideTip);
 
-  const {g,W,H} = makeSvg("black-bar",640,340,{l:74,r:20,t:36,b:72});
-  const yMin = d3.min(data,d=>d.value)*0.88;
-  const x = d3.scaleBand().domain(data.map(d=>d.country)).range([0,W]).padding(0.28);
-  const y = d3.scaleLinear().domain([yMin,d3.max(data,d=>d.value)*1.04]).range([H,0]);
-  const alarm = d3.scaleSequential(d3.interpolateYlOrRd).domain([yMin,d3.max(data,d=>d.value)]);
+        g.append("text")
+          .attr("x", W / 2)
+          .attr("y", -14)
+          .attr("text-anchor", "middle")
+          .style("font-size", "10.5px")
+          .style("fill", "#b83228")
+          .text(
+            "\u26A0  These nations lead global climate performance!!!  \u26A0",
+          );
 
-  gridlines(g,d3.axisLeft(y).ticks(5),W);
-  g.selectAll("rect.bb").data(data).enter().append("rect")
-    .attr("class","bb")
-    .attr("x",d=>x(d.country)).attr("y",d=>y(d.value))
-    .attr("width",x.bandwidth()).attr("height",d=>H-y(d.value))
-    .attr("fill",d=>alarm(d.value)).attr("rx",2)
-    .on("mousemove",(evt,d)=>showTip(d.country+": "+d.value.toFixed(2)+" kg",evt))
-    .on("mouseleave",hideTip);
+        g.append("g")
+          .attr("transform", "translate(0," + H + ")")
+          .call(d3.axisBottom(x))
+          .call((ax) => {
+            ax.select(".domain").attr("stroke", "#ccc");
+            ax.selectAll("text")
+              .attr("transform", "rotate(-30)")
+              .attr("text-anchor", "end")
+              .style("font-size", "10px")
+              .style("fill", "#444");
+          });
+        g.append("g")
+          .call(
+            d3
+              .axisLeft(y)
+              .ticks(5)
+              .tickFormat((d) => d.toFixed(1) + " kg"),
+          )
+          .call((ax) => {
+            ax.select(".domain").remove();
+            ax.selectAll("text")
+              .style("font-size", "10px")
+              .style("fill", "#555");
+          });
+        g.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x", -H / 2)
+          .attr("y", -58)
+          .attr("text-anchor", "middle")
+          .style("font-size", "10px")
+          .style("fill", "#777")
+          .text("kg CO\u2082-equivalent per person (2023)");
+      }
 
-  g.append("text").attr("x",W/2).attr("y",-14).attr("text-anchor","middle")
-    .style("font-size","10.5px").style("fill","#b83228")
-    .text("\u26A0  These nations lead global climate performance!!!  \u26A0");
+      // ── BLACK LINE (misleading) ───────────────────────────────────────
+      function drawBlackLine(byCountryYear) {
+        const bhYears = [2018, 2019, 2020, 2021, 2022, 2023];
 
-  g.append("g").attr("transform","translate(0,"+H+")").call(d3.axisBottom(x))
-    .call(ax=>{ax.select(".domain").attr("stroke","#ccc");
-      ax.selectAll("text").attr("transform","rotate(-30)").attr("text-anchor","end")
-        .style("font-size","10px").style("fill","#444");});
-  g.append("g").call(d3.axisLeft(y).ticks(5).tickFormat(d=>d.toFixed(1)+" kg"))
-    .call(ax=>{ax.select(".domain").remove();ax.selectAll("text").style("font-size","10px").style("fill","#555");});
-  g.append("text").attr("transform","rotate(-90)").attr("x",-H/2).attr("y",-58)
-    .attr("text-anchor","middle").style("font-size","10px").style("fill","#777")
-    .text("kg CO\u2082-equivalent per person (2023)");
-}
+        const series = BH_LINE_COUNTRIES.filter(
+          (c) =>
+            byCountryYear[c] &&
+            bhYears.every((yr) => byCountryYear[c][yr] != null),
+        ).map((c) => ({
+          country: c,
+          label: BH_LINE_LABELS[c] || c,
+          pts: bhYears.map((yr) => ({ yr, val: byCountryYear[c][yr] })),
+        }));
 
-// ── BLACK LINE (misleading) ───────────────────────────────────────
-function drawBlackLine(byCountryYear){
-  const bhYears = [2018,2019,2020,2021,2022,2023];
+        const allVals = series.flatMap((s) => s.pts.map((p) => p.val));
+        const yMin = d3.min(allVals) * 0.95,
+          yMax = d3.max(allVals) * 1.03;
 
-  const series = BH_LINE_COUNTRIES
-    .filter(c => byCountryYear[c] && bhYears.every(yr => byCountryYear[c][yr] != null))
-    .map(c => ({
-      country:c,
-      label: BH_LINE_LABELS[c]||c,
-      pts: bhYears.map(yr=>({yr, val:byCountryYear[c][yr]}))
-    }));
+        const { g, W, H } = makeSvg("black-line", 720, 320, {
+          l: 68,
+          r: 115,
+          t: 36,
+          b: 50,
+        });
+        const x = d3.scaleLinear().domain([2018, 2023]).range([0, W]);
+        const y = d3.scaleLinear().domain([yMin, yMax]).range([H, 0]);
+        const lineGen = d3
+          .line()
+          .x((d) => x(d.yr))
+          .y((d) => y(d.val))
+          .curve(d3.curveMonotoneX);
 
-  const allVals = series.flatMap(s=>s.pts.map(p=>p.val));
-  const yMin = d3.min(allVals)*0.95, yMax = d3.max(allVals)*1.03;
+        gridlines(g, d3.axisLeft(y).ticks(5), W);
 
-  const {g,W,H} = makeSvg("black-line",720,320,{l:68,r:115,t:36,b:50});
-  const x = d3.scaleLinear().domain([2018,2023]).range([0,W]);
-  const y = d3.scaleLinear().domain([yMin,yMax]).range([H,0]);
-  const lineGen = d3.line().x(d=>x(d.yr)).y(d=>y(d.val)).curve(d3.curveMonotoneX);
+        for (const { country, label, pts } of series) {
+          const col = BH_COLORS[country] || "#888";
+          g.append("path")
+            .datum(pts)
+            .attr("fill", "none")
+            .attr("stroke", col)
+            .attr("stroke-width", 2.6)
+            .attr("d", lineGen);
+          g.selectAll(".bd" + country.replace(/[\s()]/g, "_"))
+            .data(pts)
+            .enter()
+            .append("circle")
+            .attr("cx", (d) => x(d.yr))
+            .attr("cy", (d) => y(d.val))
+            .attr("r", 3.5)
+            .attr("fill", col)
+            .on("mousemove", (evt, d) =>
+              showTip(label + ": " + d.val.toFixed(2) + " kg", evt),
+            )
+            .on("mouseleave", hideTip);
+        }
 
-  gridlines(g,d3.axisLeft(y).ticks(5),W);
+        // Collision-resolve end labels
+        const BLOCK_H = 13;
+        const slots = series.map((s) => ({
+          y: y(s.pts[s.pts.length - 1].val) - 4,
+          h: BLOCK_H,
+        }));
+        resolveLabels(slots, 3);
 
-  for(const {country,label,pts} of series){
-    const col = BH_COLORS[country]||"#888";
-    g.append("path").datum(pts).attr("fill","none").attr("stroke",col)
-      .attr("stroke-width",2.6).attr("d",lineGen);
-    g.selectAll(".bd"+country.replace(/[\s()]/g,"_")).data(pts).enter().append("circle")
-      .attr("cx",d=>x(d.yr)).attr("cy",d=>y(d.val)).attr("r",3.5).attr("fill",col)
-      .on("mousemove",(evt,d)=>showTip(label+": "+d.val.toFixed(2)+" kg",evt))
-      .on("mouseleave",hideTip);
-  }
+        series.forEach((s, i) => {
+          const col = BH_COLORS[s.country] || "#888";
+          const lx = x(2023);
+          const endY = y(s.pts[s.pts.length - 1].val);
+          const sy = slots[i].y;
+          g.append("line")
+            .attr("x1", lx + 3)
+            .attr("x2", lx + 7)
+            .attr("y1", endY)
+            .attr("y2", sy + 8)
+            .attr("stroke", col)
+            .attr("stroke-width", 0.8)
+            .attr("opacity", 0.45);
+          g.append("text")
+            .attr("x", lx + 9)
+            .attr("y", sy + 8)
+            .style("font-size", "10px")
+            .style("fill", col)
+            .style("font-weight", "700")
+            .text(s.label);
+        });
 
-  // Collision-resolve end labels
-  const BLOCK_H = 13;
-  const slots = series.map(s=>({y:y(s.pts[s.pts.length-1].val)-4, h:BLOCK_H}));
-  resolveLabels(slots,3);
+        g.append("text")
+          .attr("x", W / 2)
+          .attr("y", -14)
+          .attr("text-anchor", "middle")
+          .style("font-size", "10.5px")
+          .style("fill", "#b83228")
+          .text("Emissions COLLAPSING - European climate action is working!");
 
-  series.forEach((s,i)=>{
-    const col = BH_COLORS[s.country]||"#888";
-    const lx = x(2023);
-    const endY = y(s.pts[s.pts.length-1].val);
-    const sy = slots[i].y;
-    g.append("line")
-      .attr("x1",lx+3).attr("x2",lx+7)
-      .attr("y1",endY).attr("y2",sy+8)
-      .attr("stroke",col).attr("stroke-width",0.8).attr("opacity",0.45);
-    g.append("text").attr("x",lx+9).attr("y",sy+8)
-      .style("font-size","10px").style("fill",col).style("font-weight","700")
-      .text(s.label);
-  });
+        g.append("g")
+          .attr("transform", "translate(0," + H + ")")
+          .call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(6))
+          .call((ax) => {
+            ax.select(".domain").attr("stroke", "#ccc");
+            ax.selectAll("text")
+              .style("font-size", "10px")
+              .style("fill", "#555");
+          });
+        g.append("g")
+          .call(
+            d3
+              .axisLeft(y)
+              .ticks(5)
+              .tickFormat((d) => d.toFixed(1) + " kg"),
+          )
+          .call((ax) => {
+            ax.select(".domain").remove();
+            ax.selectAll("text")
+              .style("font-size", "10px")
+              .style("fill", "#555");
+          });
+        g.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x", -H / 2)
+          .attr("y", -54)
+          .attr("text-anchor", "middle")
+          .style("font-size", "10px")
+          .style("fill", "#777")
+          .text("kg CO\u2082-equivalent per person");
+      }
 
-  g.append("text").attr("x",W/2).attr("y",-14).attr("text-anchor","middle")
-    .style("font-size","10.5px").style("fill","#b83228")
-    .text("Emissions COLLAPSING - European climate action is working!");
+      // ── LOAD CSV THEN DRAW EVERYTHING ────────────────────────────────
+      d3.csv(CSV_PATH).then((raw) => {
+        // Filter to individual countries only (3-letter ISO codes, skip OECD/EU aggregates)
+        // Build a lookup: byCountryYear[countryName][year] = value
+        const byCountryYear = {};
+        raw
+          .filter((d) => d["REF_AREA"].length === 3 && d["OBS_VALUE"] !== "")
+          .forEach((d) => {
+            const country = d["Reference area"];
+            const year = +d["TIME_PERIOD"];
+            const value = +d["OBS_VALUE"];
+            if (!byCountryYear[country]) byCountryYear[country] = {};
+            byCountryYear[country][year] = value;
+          });
 
-  g.append("g").attr("transform","translate(0,"+H+")").call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(6))
-    .call(ax=>{ax.select(".domain").attr("stroke","#ccc");ax.selectAll("text").style("font-size","10px").style("fill","#555");});
-  g.append("g").call(d3.axisLeft(y).ticks(5).tickFormat(d=>d.toFixed(1)+" kg"))
-    .call(ax=>{ax.select(".domain").remove();ax.selectAll("text").style("font-size","10px").style("fill","#555");});
-  g.append("text").attr("transform","rotate(-90)").attr("x",-H/2).attr("y",-54)
-    .attr("text-anchor","middle").style("font-size","10px").style("fill","#777")
-    .text("kg CO\u2082-equivalent per person");
-}
-
-// ── LOAD CSV THEN DRAW EVERYTHING ────────────────────────────────
-d3.csv(CSV_PATH).then(raw => {
-  // Filter to individual countries only (3-letter ISO codes, skip OECD/EU aggregates)
-  // Build a lookup: byCountryYear[countryName][year] = value
-  const byCountryYear = {};
-  raw
-    .filter(d => d["REF_AREA"].length === 3 && d["OBS_VALUE"] !== "")
-    .forEach(d => {
-      const country = d["Reference area"];
-      const year    = +d["TIME_PERIOD"];
-      const value   = +d["OBS_VALUE"];
-      if(!byCountryYear[country]) byCountryYear[country] = {};
-      byCountryYear[country][year] = value;
-    });
-
-  drawWhiteBar(byCountryYear);
-  drawWhiteLine(byCountryYear);
-  drawBlackBar(byCountryYear);
-  drawBlackLine(byCountryYear);
-});
-
-</script>
-</body>
+        drawWhiteBar(byCountryYear);
+        drawWhiteLine(byCountryYear);
+        drawBlackBar(byCountryYear);
+        drawBlackLine(byCountryYear);
+      });
+    </script>
+  </body>
 </html>
