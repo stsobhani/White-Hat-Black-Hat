@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GHG Emissions Per Capita — White &amp; Black Hat</title>
+  <title>White Hat & Black Hat Project</title>
   <style>
 body {
   font-family: Georgia, serif;
@@ -53,35 +53,34 @@ ul { font-size: 15px; margin: 6px 0 10px 20px; }
 
 <nav>
   <a href="index.html" class="active">Visualizations</a>
-  <a href="about.html">Write-ups</a>
+  <a href="about.html">Write-Ups</a>
 </nav>
 
-<h1>Greenhouse Gas Emissions Per Capita</h1>
-<p class="subtitle">OECD data, kg CO&#8322;-equivalent per person. Two perspectives on the same dataset.</p>
-<a class="writeup-link" href="about.html">Read the Write-ups &rarr;</a>
-
+<h1>Greenhouse Gas Emissions Per Capita: OECD Country Comparison</h1>
+<p class="subtitle">A visualization of OECD per-capita greenhouse gas emissions (2014–2023), showing how different design choices can change interpretation of the same dataset.</p>
+<a class="writeup-link" href="about.html">Read the Write-Ups Here</a>
 <h2>White Hat Visualization</h2>
-<p>The charts below show all available countries honestly, using a zero-based axis and a color scale where red&nbsp;=&nbsp;high emissions and green&nbsp;=&nbsp;low.</p>
+<p>The charts below show all available countries honestly, using the zero-based axis and a color scale where red is high emissions and green is low.</p>
 
 <div class="chart-block">
-  <h3>All Countries &mdash; GHG Emissions Per Capita (2023)</h3>
-  <p class="chart-caption">kg CO&#8322;e per person &middot; Sorted descending &middot; Hover for values &middot; Source: OECD Air Emissions Inventories</p>
+  <h3>All Countries: GHG Emissions Per Capita (2023)</h3>
+  <p class="chart-caption">kg CO&#8322;e per person | Sorted descending | Hover for values | Source: OECD Air Emissions Inventories</p>
   <div id="white-bar"></div>
 </div>
 
 <div class="chart-block">
-  <h3>Trends Over Time &mdash; Selected Countries (2014&ndash;2023)</h3>
-  <p class="chart-caption">kg CO&#8322;e per person &middot; Y-axis starts at zero &middot; Labels show % change from 2014 &middot; Hover for exact values</p>
+  <h3>Trends Over Time &mdash; Selected Countries (2014-2023)</h3>
+  <p class="chart-caption">kg CO&#8322;e per person | Y-axis starts at zero | Labels show % change from 2014 | Hover for exact values</p>
   <div id="white-line"></div>
 </div>
 
 <h2>Black Hat Visualization</h2>
-<p class="warning">&#9888; These charts are intentionally misleading for educational purposes. See the <a href="about.html">Write-ups</a> for a full explanation.</p>
+<p class="warning"> These charts are intentionally misleading for educational purposes. See the <a href="about.html">Write-ups</a> for a full explanation.</p>
 <p>The charts below use selective filtering, a truncated y-axis, and misleading titles to create a false impression about global emissions trends.</p>
 
 <div class="chart-block">
   <h3>European Nations Dominate Global Climate Progress</h3>
-  <p class="chart-caption">Annual GHG emissions per capita &middot; "Selected leading nations" &middot; 2023</p>
+  <p class="chart-caption">Annual GHG emissions per capita | "Selected leading nations" | 2023</p>
   <div id="black-bar"></div>
 </div>
 
@@ -296,7 +295,7 @@ function drawBlackBar(){
 
   g.append("text").attr("x",W/2).attr("y",-14).attr("text-anchor","middle")
     .style("font-size","10.5px").style("fill","#b83228")
-    .text("\u2605  These nations lead global climate performance  \u2605");
+    .text("\u26A0  These nations lead global climate performance!!!  \u26A0");
 
   g.append("g").attr("transform","translate(0,"+H+")").call(d3.axisBottom(x))
     .call(ax=>{ax.select(".domain").attr("stroke","#ccc");
@@ -363,7 +362,7 @@ function drawBlackLine(){
 
   g.append("text").attr("x",W/2).attr("y",-14).attr("text-anchor","middle")
     .style("font-size","10.5px").style("fill","#b83228")
-    .text("Emissions COLLAPSING \u2014 European climate action is working!");
+    .text("Emissions COLLAPSING - European climate action is working!");
 
   g.append("g").attr("transform","translate(0,"+H+")").call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(6))
     .call(ax=>{ax.select(".domain").attr("stroke","#ccc");ax.selectAll("text").style("font-size","10px").style("fill","#555");});

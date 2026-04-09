@@ -23,13 +23,13 @@ const BH_COLORS = {
   "Sweden": "#9b59b6", "Portugal": "#c0392b"
 };
 
-// ── Tooltip ──────────────────────────────────────────────────────────────────
+// This is the tooltip
 const tip = document.getElementById("tooltip");
 function showTip(html, evt) { tip.innerHTML = html; tip.style.opacity = 1; moveTip(evt); }
 function moveTip(evt) { tip.style.left = (evt.clientX + 14) + "px"; tip.style.top = (evt.clientY - 10) + "px"; }
 function hideTip() { tip.style.opacity = 0; }
 
-// ── SVG helper ────────────────────────────────────────────────────────────────
+// Helps makes the SVG
 function makeSvg(id, vw, vh, m) {
   const g = d3.select("#" + id).append("svg")
     .attr("viewBox", `0 0 ${vw} ${vh}`)
@@ -43,7 +43,7 @@ function gridlines(g, axFn, len) {
    .call(gr => { gr.select(".domain").remove(); gr.selectAll("line").attr("stroke","#e0ddd8").attr("stroke-dasharray","3,3"); });
 }
 
-// ── WHITE HAT: bar chart ──────────────────────────────────────────────────────
+// The white hat bar chart
 function drawWhiteBar(data2023) {
   const sorted = [...data2023].sort((a, b) => b.value - a.value);
   const { g, W, H } = makeSvg("white-bar", 960, 420, { l:66, r:20, t:24, b:128 });
@@ -61,7 +61,7 @@ function drawWhiteBar(data2023) {
     .on("mousemove", (evt, d) => showTip(`<b>${d.country}</b><br>${d.value.toFixed(2)} kg CO₂e/person`, evt))
     .on("mouseleave", hideTip);
 
-  // OECD avg line
+  // The OECD avg line
   const avg = d3.mean(sorted, d => d.value);
   g.append("line").attr("x1",0).attr("x2",W).attr("y1",y(avg)).attr("y2",y(avg))
     .attr("stroke","#2c3e50").attr("stroke-dasharray","6,3").attr("stroke-width",1.5);
@@ -82,7 +82,7 @@ function drawWhiteBar(data2023) {
     .text("kg CO₂-equivalent per person (2023)");
 }
 
-// ── WHITE HAT: line chart ─────────────────────────────────────────────────────
+// The white hat line chart
 function drawWhiteLine(allRows) {
   const { g, W, H } = makeSvg("white-line", 900, 360, { l:68, r:145, t:20, b:50 });
 
@@ -124,17 +124,17 @@ function drawWhiteLine(allRows) {
     .text("kg CO₂-equivalent per person");
 }
 
-// ── BLACK HAT: bar chart ──────────────────────────────────────────────────────
+// The black hat line chart
 function drawBlackBar(data2023) {
-  // Cherry-pick only low emitters
+  // Cherry-pick only the low emitters
   const filtered = data2023
     .filter(d => BH_BAR_COUNTRIES.includes(d.country))
-    .sort((a, b) => a.value - b.value);  // ascending makes gaps look huge
+    .sort((a, b) => a.value - b.value);
 
   const { g, W, H } = makeSvg("black-bar", 640, 340, { l:74, r:20, t:36, b:72 });
 
   const x = d3.scaleBand().domain(filtered.map(d => d.country)).range([0, W]).padding(0.28);
-  // Truncated axis — does NOT start at 0
+  // Truncated axis which does not start at 0
   const yMin = d3.min(filtered, d => d.value) * 0.88;
   const y = d3.scaleLinear().domain([yMin, d3.max(filtered, d => d.value) * 1.04]).range([H, 0]);
 
@@ -166,16 +166,16 @@ function drawBlackBar(data2023) {
     .text("kg CO₂-equivalent per person (2023)");
 }
 
-// ── BLACK HAT: line chart ─────────────────────────────────────────────────────
+// The black hat line chart
 function drawBlackLine(allRows) {
-  // Only 2018–2023, only cherry-picked low emitters
+  // Only 2018–2023 where we only cherry-picked low emitters
   const filtered = allRows.filter(d => BH_LINE_COUNTRIES.includes(d.country) && d.year >= 2018);
 
   const { g, W, H } = makeSvg("black-line", 720, 320, { l:68, r:120, t:36, b:50 });
 
   const years = [...new Set(filtered.map(d => d.year))].sort();
   const x = d3.scaleLinear().domain(d3.extent(years)).range([0, W]);
-  // Zoomed y-axis — does NOT start at 0
+  // The Zoomed y-axis which does not start at zero
   const yMin = d3.min(filtered, d => d.value) * 0.95;
   const yMax = d3.max(filtered, d => d.value) * 1.03;
   const y = d3.scaleLinear().domain([yMin, yMax]).range([H, 0]);
@@ -218,9 +218,9 @@ function drawBlackLine(allRows) {
     .text("kg CO₂-equivalent per person");
 }
 
-// ── INIT: load CSV, then draw everything ──────────────────────────────────────
+// loads the csv and then we draw everything else
 d3.csv(CSV_PATH).then(raw => {
-  // Parse: keep only 3-letter country codes (skip aggregates like OECD, EU27)
+  // This keeps only 3-letter country codes
   const allRows = raw
     .filter(d => d["REF_AREA"].length === 3 && d["OBS_VALUE"] !== "")
     .map(d => ({
