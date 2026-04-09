@@ -14,6 +14,7 @@ body {
   color: #222;
   line-height: 1.6;
 }
+
 nav {
   display: flex;
   gap: 20px;
@@ -23,30 +24,53 @@ nav {
   font-family: Arial, sans-serif;
   font-size: 14px;
 }
+
 nav a { text-decoration: none; color: #444; }
 nav a:hover { color: #000; }
 nav a.active { font-weight: bold; color: #000; }
+
 h1 { font-size: 26px; margin-bottom: 6px; }
 h2 { font-size: 20px; margin: 40px 0 6px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
 h3 { font-size: 15px; margin: 0 0 4px; font-weight: normal; color: #333; }
 h4 { font-size: 15px; margin: 18px 0 4px; }
-p  { margin: 10px 0; font-size: 15px; }
+
+p { margin: 10px 0; font-size: 15px; }
 ul { font-size: 15px; margin: 6px 0 10px 20px; }
+
 .subtitle { font-size: 14px; color: #666; margin-bottom: 16px; }
+
 .writeup-link {
-  display: inline-block; margin-top: 10px; font-size: 14px; color: #444;
-  text-decoration: none; border: 1px solid #aaa; padding: 4px 12px;
-  border-radius: 3px; font-family: Arial, sans-serif;
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #444;
+  text-decoration: none;
+  border: 1px solid #aaa;
+  padding: 4px 12px;
+  border-radius: 3px;
+  font-family: Arial, sans-serif;
 }
 .writeup-link:hover { background: #f5f5f5; }
+
 .warning { font-size: 13px; color: #a00; margin: 8px 0 16px; font-family: Arial, sans-serif; }
+
 .chart-block { margin-bottom: 44px; }
 .chart-caption { font-size: 12px; color: #888; font-family: Arial, sans-serif; margin-bottom: 8px; }
+
 #tooltip {
-  position: fixed; pointer-events: none; background: #222; color: #fff;
-  padding: 5px 9px; border-radius: 3px; font-size: 12px; font-family: Arial, sans-serif;
-  opacity: 0; transition: opacity 0.1s; z-index: 999;
+  position: fixed;
+  pointer-events: none;
+  background: #222;
+  color: #fff;
+  padding: 5px 9px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  opacity: 0;
+  transition: opacity 0.1s;
+  z-index: 999;
 }
+
   </style>
 </head>
 <body>
@@ -59,6 +83,7 @@ ul { font-size: 15px; margin: 6px 0 10px 20px; }
 <h1>Greenhouse Gas Emissions Per Capita: OECD Country Comparison</h1>
 <p class="subtitle">A visualization of OECD per-capita greenhouse gas emissions (2014–2023), showing how different design choices can change interpretation of the same dataset.</p>
 <a class="writeup-link" href="about.html">Read the Write-Ups Here</a>
+
 <h2>White Hat Visualization</h2>
 <p>The charts below show all available countries honestly, using the zero-based axis and a color scale where red is high emissions and green is low.</p>
 
@@ -69,13 +94,13 @@ ul { font-size: 15px; margin: 6px 0 10px 20px; }
 </div>
 
 <div class="chart-block">
-  <h3>Trends Over Time &mdash; Selected Countries (2014-2023)</h3>
+  <h3>Trends Over Time &mdash; Selected Countries (2014&ndash;2023)</h3>
   <p class="chart-caption">kg CO&#8322;e per person | Y-axis starts at zero | Labels show % change from 2014 | Hover for exact values</p>
   <div id="white-line"></div>
 </div>
 
 <h2>Black Hat Visualization</h2>
-<p class="warning"> These charts are intentionally misleading for educational purposes. See the <a href="about.html">Write-ups</a> for a full explanation.</p>
+<p class="warning">&#9888; These charts are intentionally misleading for educational purposes. See the <a href="about.html">Write-ups</a> for a full explanation.</p>
 <p>The charts below use selective filtering, a truncated y-axis, and misleading titles to create a false impression about global emissions trends.</p>
 
 <div class="chart-block">
@@ -92,33 +117,24 @@ ul { font-size: 15px; margin: 6px 0 10px 20px; }
 
 <div id="tooltip"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
-/* ═══════════════════════════════════════════════════════════════════
-   DATA — pre-parsed from OECD CSV. byCountryYear[name][year] = value.
-   PCT_CHANGE[name] = % change 2014→2023, computed from raw values.
-═══════════════════════════════════════════════════════════════════ */
-const RAW_DATA   = {"byCountryYear":{"Australia":{"2023":19.92922,"2017":22.74916,"2015":22.76201,"2022":19.98485,"2018":22.44748,"2014":22.74019,"2019":21.86902,"2016":22.74003,"2021":20.40214,"2020":20.91176},"Austria":{"2023":7.523844,"2017":9.391686,"2015":9.180776,"2022":8.110068,"2018":8.984918,"2014":9.033319,"2019":9.08026,"2016":9.192056,"2021":8.706675,"2020":8.370743},"Belgium":{"2023":8.385736,"2017":10.25028,"2015":10.52475,"2022":8.845402,"2018":10.26945,"2014":10.21425,"2019":10.12343,"2016":10.34431,"2021":9.486282,"2020":9.26923},"Canada":{"2023":17.65728,"2017":20.03908,"2015":20.63403,"2022":18.02878,"2018":20.0309,"2014":20.97687,"2019":19.77897,"2016":19.9407,"2021":18.03644,"2020":17.87396},"Czechia":{"2023":9.441118,"2017":12.21656,"2015":11.94751,"2022":10.72959,"2018":11.98083,"2014":11.91482,"2019":11.46535,"2016":12.13502,"2021":11.09741,"2020":10.56825},"Denmark":{"2023":6.558307,"2017":8.648594,"2015":8.831057,"2022":7.198875,"2018":8.580415,"2014":9.377474,"2019":7.870842,"2016":9.11466,"2021":7.524057,"2020":7.401293},"Estonia":{"2023":7.945063,"2017":15.76337,"2015":13.6325,"2022":10.48012,"2018":15.09539,"2014":15.96656,"2019":10.93776,"2016":14.84915,"2021":9.437351,"2020":8.526422},"Finland":{"2023":7.329767,"2017":9.988059,"2015":10.04057,"2022":8.196082,"2018":10.1648,"2014":10.7283,"2019":9.53934,"2016":10.53471,"2021":8.616688,"2020":8.626773},"France":{"2023":5.653277,"2017":7.110206,"2015":7.074852,"2022":6.074304,"2018":6.790996,"2014":7.046576,"2019":6.62196,"2016":7.093895,"2021":6.340007,"2020":5.997182},"Germany":{"2023":7.948367,"2017":10.616,"2015":10.98749,"2022":8.905058,"2018":10.22998,"2014":10.98049,"2019":9.550692,"2016":10.84203,"2021":9.097411,"2020":8.764853},"Greece":{"2023":7.022876,"2017":8.950194,"2015":8.878441,"2022":7.468909,"2018":8.667607,"2014":9.174307,"2019":8.052013,"2016":8.574775,"2021":7.373946,"2020":7.091454},"Hungary":{"2023":5.607061,"2017":6.664885,"2015":6.342242,"2022":6.167502,"2018":6.668178,"2014":6.00465,"2019":6.646106,"2016":6.425023,"2021":6.594334,"2020":6.455618},"Iceland":{"2023":11.988,"2017":14.21876,"2015":14.63909,"2022":12.57169,"2018":14.01085,"2014":14.53881,"2019":13.29792,"2016":14.29545,"2021":12.69083,"2020":12.5612},"Ireland":{"2023":10.57115,"2017":12.87677,"2015":12.84987,"2022":11.53821,"2018":12.64129,"2014":12.47143,"2019":12.11575,"2016":13.19347,"2021":11.97744,"2020":11.56396},"Israel":{"2023":8.432515,"2017":9.580019,"2015":10.04037,"2022":8.936344,"2018":9.441315,"2014":9.849664,"2019":9.402014,"2016":9.846153,"2021":8.796155,"2020":9.061138},"Italy":{"2023":6.451943,"2017":7.159425,"2015":7.306344,"2022":6.91256,"2018":7.105342,"2014":7.120819,"2019":6.926384,"2016":7.262397,"2021":6.885666,"2020":6.327091},"Japan":{"2023":8.596324,"2017":9.992245,"2015":10.23948,"2022":8.91251,"2018":9.639091,"2014":10.5282,"2019":9.373204,"2016":10.10148,"2021":9.108153,"2020":8.894616},"Latvia":{"2023":5.295873,"2017":5.551417,"2015":5.437304,"2022":5.372667,"2018":5.843408,"2014":5.373127,"2019":5.812749,"2016":5.48277,"2021":5.681176,"2020":5.519989},"Lithuania":{"2023":6.254073,"2017":7.007361,"2015":6.762146,"2022":6.529821,"2018":6.951449,"2014":6.594755,"2019":7.042611,"2016":6.866907,"2021":7.056945,"2020":7.000509},"Luxembourg":{"2023":11.68083,"2017":17.24055,"2015":18.14989,"2022":12.57329,"2018":17.40738,"2014":19.4309,"2019":17.33832,"2016":17.31256,"2021":14.68809,"2020":14.37257},"Netherlands":{"2023":7.85981,"2017":11.09322,"2015":11.35148,"2022":8.550703,"2018":10.73006,"2014":10.9876,"2019":10.32719,"2016":11.32236,"2021":9.402311,"2020":9.330465},"New Zealand":{"2023":14.77261,"2017":17.17259,"2015":18.05449,"2022":15.19625,"2018":16.9124,"2014":18.4279,"2019":16.84859,"2016":17.20145,"2021":16.02921,"2020":16.05091},"Norway":{"2023":8.437336,"2017":9.982174,"2015":10.4499,"2022":8.954423,"2018":9.944004,"2014":10.45206,"2019":9.548388,"2016":10.18965,"2021":9.105592,"2020":9.178269},"Poland":{"2023":8.979228,"2017":10.66434,"2015":9.996041,"2022":9.91145,"2018":10.67059,"2014":9.929695,"2019":10.09156,"2016":10.28008,"2021":10.48352,"2020":9.712359},"Portugal":{"2023":5.093018,"2017":6.846301,"2015":6.502329,"2022":5.402277,"2018":6.491846,"2014":6.078352,"2019":6.13362,"2016":6.339368,"2021":5.388249,"2020":5.530717},"Slovak Republic":{"2023":6.537386,"2017":7.744914,"2015":7.453356,"2022":6.731154,"2018":7.707138,"2014":7.319902,"2019":7.267905,"2016":7.545991,"2021":7.510327,"2020":6.766585},"Slovenia":{"2023":6.98851,"2017":8.639655,"2015":8.179931,"2022":7.355082,"2018":8.531396,"2014":8.093888,"2019":8.222804,"2016":8.603161,"2021":7.593741,"2020":7.564375},"Spain":{"2023":5.634706,"2017":7.111025,"2015":7.110942,"2022":6.111369,"2018":6.955995,"2014":6.857054,"2019":6.511927,"2016":6.855799,"2021":6.024189,"2020":5.658686},"Sweden":{"2023":4.206605,"2017":5.199349,"2015":5.437399,"2022":4.214768,"2018":5.05477,"2014":5.515628,"2019":4.883338,"2016":5.360955,"2021":4.581526,"2020":4.441116},"Switzerland":{"2023":4.594231,"2017":5.731875,"2015":5.914449,"2022":4.754273,"2018":5.508288,"2014":6.044053,"2019":5.440202,"2016":5.892591,"2021":5.209583,"2020":5.096887},"T\u00fcrkiye":{"2023":6.862767,"2017":6.407755,"2015":6.017152,"2022":6.434767,"2018":6.275307,"2014":5.997226,"2019":6.066827,"2016":6.184704,"2021":6.622971,"2020":6.181012},"United Kingdom":{"2023":5.613822,"2017":7.134717,"2015":7.837874,"2022":5.954677,"2018":6.976843,"2014":8.215401,"2019":6.692477,"2016":7.366669,"2021":6.265779,"2020":6.077576},"Belarus":{"2023":9.56043,"2017":9.421781,"2015":9.338513,"2022":9.631652,"2018":9.746824,"2014":9.893406,"2019":9.808526,"2016":9.244925,"2021":9.960464,"2020":9.635014},"Bulgaria":{"2023":6.675433,"2017":8.421081,"2015":8.418443,"2022":8.555132,"2018":7.861728,"2014":7.927114,"2019":7.72982,"2016":8.108453,"2021":7.856872,"2020":6.911945},"Croatia":{"2023":6.524332,"2017":6.318025,"2015":5.916793,"2022":6.276711,"2018":6.123429,"2014":5.758433,"2019":6.225204,"2016":6.025329,"2021":6.224454,"2020":6.044096},"Cyprus":{"2023":6.317472,"2017":7.117575,"2015":6.822128,"2022":6.261792,"2018":6.939748,"2014":6.882424,"2019":6.542007,"2016":7.082761,"2021":6.207363,"2020":6.190146},"Kazakhstan":{"2023":17.01328,"2017":20.84414,"2015":20.38768,"2022":17.19394,"2018":21.34503,"2014":20.52191,"2019":19.34913,"2016":20.0808,"2021":16.20224,"2020":18.43434},"Liechtenstein":{"2023":4.22602,"2017":5.090501,"2015":5.279607,"2022":4.195264,"2018":4.732372,"2014":5.356115,"2019":4.868305,"2016":4.973462,"2021":4.678162,"2020":4.631047},"Malta":{"2023":4.214103,"2017":4.311118,"2015":4.82424,"2022":4.278131,"2018":4.165486,"2014":6.549833,"2019":4.219994,"2016":4.067336,"2021":4.005686,"2020":4.025918},"Monaco":{"2023":1.534798,"2017":2.212514,"2015":2.395645,"2022":1.671067,"2018":2.261659,"2014":2.346737,"2019":2.157267,"2016":2.329862,"2021":1.892956,"2020":1.804676},"Romania":{"2023":5.432569,"2017":5.98312,"2015":5.878012,"2022":5.721738,"2018":6.048876,"2014":5.914941,"2019":5.912965,"2016":5.806685,"2021":5.994079,"2020":5.750749},"Russia":{"2023":14.32121,"2017":13.67797,"2015":13.54438,"2022":13.91034,"2018":14.07665,"2014":13.6596,"2019":13.99041,"2016":13.45777,"2021":13.91481,"2020":13.49968},"Serbia":{"2023":9.169923,"2017":9.189626,"2015":8.753469,"2022":9.226242,"2018":9.022214,"2014":7.617867,"2019":8.99412,"2016":9.027099,"2021":9.060741,"2020":9.235191},"Ukraine":{"2023":6.171138,"2017":7.236908,"2015":7.093762,"2022":5.826824,"2018":7.631061,"2014":8.028714,"2019":7.569845,"2016":7.525199,"2021":7.529293,"2020":7.278898},"Chile":{"2017":5.696826,"2015":5.585496,"2022":5.679356,"2018":5.672374,"2014":5.283227,"2019":5.682408,"2016":5.755747,"2021":5.687362,"2020":5.354269},"Colombia":{"2017":3.476127,"2015":3.604959,"2018":3.619326,"2014":3.509622,"2019":3.683094,"2016":3.601354,"2021":3.584791,"2020":3.479452},"Costa Rica":{"2017":3.16124,"2015":2.995665,"2018":3.200677,"2014":3.075124,"2019":3.187736,"2016":3.103583,"2021":3.193075,"2020":2.90543},"Korea":{"2017":14.74389,"2015":14.24184,"2022":13.98723,"2018":15.17932,"2014":14.33164,"2019":14.66927,"2016":14.37503,"2021":14.29121,"2020":13.74816},"Mexico":{"2017":6.142427,"2015":6.157423,"2022":5.919702,"2018":6.075221,"2014":6.141273,"2019":6.061272,"2016":6.438936,"2021":5.632792,"2020":5.67136},"United States":{"2017":19.71985,"2015":20.65523,"2022":18.5727,"2018":20.15406,"2014":21.37271,"2019":19.50954,"2016":19.98921,"2021":18.60527,"2020":17.6817},"Algeria":{"2017":5.087825,"2015":5.177589,"2022":5.281784,"2018":5.262534,"2014":5.151576,"2019":5.287959,"2016":5.054544,"2021":5.380772,"2020":5.04874},"Argentina":{"2017":7.752652,"2015":7.907748,"2022":7.697249,"2018":7.699173,"2014":7.848993,"2019":7.473238,"2016":7.859378,"2021":7.557831,"2020":7.061831},"Brazil":{"2017":5.765045,"2015":5.898276,"2022":5.865453,"2018":5.63276,"2014":6.026185,"2019":5.59519,"2016":5.744674,"2021":5.888017,"2020":5.557711},"Brunei Darussalam":{"2017":25.98647,"2015":26.25471,"2022":29.67097,"2018":25.09908,"2014":27.43803,"2019":25.95554,"2016":27.08624,"2021":33.40891,"2020":33.77179},"C\u00f4te d\u2019Ivoire":{"2017":1.741144,"2015":1.878543,"2022":2.695429,"2018":1.710556,"2014":1.577156,"2019":1.682472,"2016":1.795058,"2021":2.909439,"2020":1.659335},"Cuba":{"2017":4.84334,"2015":5.264931,"2022":4.466265,"2018":4.803382,"2014":5.227796,"2019":4.692558,"2016":5.114254,"2021":4.437665,"2020":4.470159},"Egypt":{"2017":3.436196,"2015":3.355361,"2022":3.429381,"2018":3.463126,"2014":3.07912,"2019":3.204049,"2016":3.422747,"2021":3.278952,"2020":3.088697},"Georgia":{"2017":4.690071,"2015":4.87484,"2022":5.296077,"2018":4.652597,"2014":4.477543,"2019":4.74158,"2016":4.921393,"2021":4.943908,"2020":4.820012},"Ghana":{"2017":1.265825,"2015":1.141843,"2022":1.446825,"2018":1.312229,"2014":1.128611,"2019":1.366898,"2016":1.189614,"2021":1.443062,"2020":1.468394},"Guatemala":{"2017":1.852833,"2015":1.855356,"2022":1.847079,"2018":1.868301,"2014":1.703142,"2019":1.882364,"2016":1.926159,"2021":1.93884,"2020":1.778021},"Guinea-Bissau":{"2017":0.7177915,"2015":0.7274069,"2022":0.7657315,"2018":0.6934381,"2014":0.6962806,"2019":0.7790754,"2016":0.7221428,"2021":0.753656,"2020":0.7595775},"Guyana":{"2017":6.172941,"2015":6.085563,"2022":10.29586,"2018":6.167833,"2014":6.078437,"2019":6.561252,"2016":6.111522,"2021":7.857966,"2020":9.162369},"Holy See":{"2017":30.69888,"2015":30.24434,"2022":31.39618,"2018":29.40696,"2014":30.32221,"2019":29.66224,"2016":29.30915,"2021":29.63985,"2020":30.21183},"Indonesia":{"2017":3.26231,"2015":3.153344,"2022":3.839404,"2018":3.378282,"2014":3.069394,"2019":3.556219,"2016":3.093477,"2021":3.461016,"2020":3.339661},"Kenya":{"2017":1.201175,"2015":1.18458,"2022":1.222736,"2018":1.223337,"2014":1.147807,"2019":1.286968,"2016":1.255773,"2021":1.300705,"2020":1.295409},"Malaysia":{"2017":9.808034,"2015":10.1734,"2018":9.79379,"2014":10.23582,"2019":9.942006,"2016":10.00872,"2021":9.595771,"2020":9.816118},"Maldives":{"2017":3.957199,"2015":3.612897,"2022":4.502358,"2018":4.197021,"2014":3.68893,"2019":4.476469,"2016":3.767199,"2021":4.390248,"2020":3.009546},"Mauritius":{"2017":4.435731,"2015":4.04746,"2022":4.624897,"2018":4.478291,"2014":4.015156,"2019":4.57325,"2016":4.154706,"2021":4.510886,"2020":4.344573},"Moldova":{"2017":4.155583,"2015":4.00439,"2022":4.260492,"2018":4.406259,"2014":3.968441,"2019":4.370677,"2016":4.138269,"2021":4.831095,"2020":4.363438},"Namibia":{"2017":4.37755,"2015":4.74826,"2022":4.355369,"2018":4.198732,"2014":4.751163,"2019":3.983455,"2016":5.007187,"2021":3.76657,"2020":3.381342},"Nepal":{"2017":1.670359,"2015":1.539005,"2022":1.959157,"2018":1.761065,"2014":1.496792,"2019":1.853793,"2016":1.544541,"2021":1.944893,"2020":1.803851},"Nigeria":{"2017":1.497191,"2015":1.524813,"2022":1.472081,"2018":1.512795,"2014":1.563994,"2019":1.519398,"2016":1.523554,"2021":1.471587,"2020":1.452109},"Panama":{"2017":4.376703,"2015":4.493486,"2018":4.362435,"2014":4.204799,"2019":5.162121,"2016":4.467756,"2021":4.722124,"2020":4.221086},"Peru":{"2017":3.230646,"2015":3.211313,"2018":3.189103,"2014":3.223498,"2019":3.26907,"2016":3.269104,"2021":3.320794,"2020":2.868927},"Rwanda":{"2017":0.7771127,"2015":0.8212945,"2022":0.9296069,"2018":0.7978748,"2014":0.7338822,"2019":0.8924332,"2016":0.7621484,"2021":0.8892792,"2020":0.8529792},"Singapore":{"2017":10.00177,"2015":9.832285,"2022":10.36283,"2018":10.08684,"2014":9.636294,"2019":9.800837,"2016":9.712685,"2021":10.50314,"2020":9.581285},"Solomon Islands":{"2017":0.8774037,"2015":0.8123034,"2022":0.7385193,"2018":0.8389294,"2014":0.8533567,"2019":0.8503432,"2016":0.9021343,"2021":0.8096753,"2020":0.8599326},"South Africa":{"2017":8.678108,"2015":9.035033,"2022":7.626128,"2018":8.537099,"2014":9.387836,"2019":8.34868,"2016":8.87429,"2021":7.89189,"2020":7.756462},"Uzbekistan":{"2017":5.397403,"2015":5.430871,"2022":5.999439,"2018":5.80262,"2014":5.650603,"2019":5.712653,"2016":5.477135,"2021":6.196108,"2020":5.595903},"Venezuela":{"2017":7.086742,"2015":7.611277,"2022":5.68212,"2018":6.191895,"2014":8.367807,"2019":5.560651,"2016":7.393056,"2021":7.581178,"2020":7.609905},"Azerbaijan":{"2022":7.256195,"2021":7.010887,"2020":6.580966},"Bhutan":{"2022":1.790353,"2019":1.872337,"2021":1.905872,"2020":1.910724},"Lebanon":{"2022":3.571952,"2021":3.716709,"2020":4.437867},"Morocco":{"2022":2.655225,"2018":2.586243,"2014":2.459603,"2016":2.473351,"2021":2.734579,"2020":2.56891},"Thailand":{"2022":5.356871,"2021":5.099677,"2020":5.205036},"Uruguay":{"2022":11.06299,"2021":11.52196,"2020":10.70697},"Saudi Arabia":{"2019":22.00738,"2021":22.85849,"2020":22.25867},"India":{"2016":2.198557},"China (People\u2019s Republic of)":{"2021":10.03497,"2020":9.652851},"Iraq":{"2021":4.728294,"2020":4.717297}},"oecdAvg":{"2023":10.43976,"2017":11.6521,"2015":11.91635,"2022":10.69744,"2018":11.657,"2014":12.10866,"2019":11.29338,"2016":11.73479,"2021":10.82362,"2020":10.40953}};
-const PCT_CHANGE = {"Australia":-12.4,"Austria":-16.7,"Belgium":-17.9,"Canada":-15.8,"Czechia":-20.8,"Denmark":-30.1,"Estonia":-50.2,"Finland":-31.7,"France":-19.8,"Germany":-27.6,"Greece":-23.5,"Hungary":-6.6,"Iceland":-17.5,"Ireland":-15.2,"Israel":-14.4,"Italy":-9.4,"Japan":-18.3,"Latvia":-1.4,"Lithuania":-5.2,"Luxembourg":-39.9,"Netherlands":-28.5,"New Zealand":-19.8,"Norway":-19.3,"Poland":-9.6,"Portugal":-16.2,"Slovak Republic":-10.7,"Slovenia":-13.7,"Spain":-17.8,"Sweden":-23.7,"Switzerland":-24.0,"T\u00fcrkiye":14.4,"United Kingdom":-31.7,"Belarus":-3.4,"Bulgaria":-15.8,"Croatia":13.3,"Cyprus":-8.2,"Kazakhstan":-17.1,"Liechtenstein":-21.1,"Malta":-35.7,"Monaco":-34.6,"Romania":-8.2,"Russia":4.8,"Serbia":20.4,"Ukraine":-23.1};
+// script.js — loads data from CSV, computes everything at runtime
 
-const { byCountryYear, oecdAvg } = RAW_DATA;
+const CSV_PATH = "data/OECD.ENV.EPI,DSD_AIR_GHG@DF_AIR_GHG,+.A.GHG._T.KG_CO2E_PS.csv";
 
-// ── Config ────────────────────────────────────────────────────────
-const LINE_COUNTRIES = ["Australia","Canada","Germany","France","United Kingdom","Sweden","Japan"];
+const LINE_COUNTRIES    = ["Australia","Canada","Germany","France","United Kingdom","Sweden","Japan"];
+const BH_BAR_COUNTRIES  = ["Sweden","Malta","Switzerland","Portugal","Latvia","Hungary","United Kingdom","France"];
+const BH_LINE_COUNTRIES = ["France","United Kingdom","Sweden","Portugal"];
+const BH_LINE_LABELS    = {"United Kingdom":"UK"};
+
 const LINE_COLORS = {
   "Australia":"#e07b39","Canada":"#c0392b","Germany":"#2c3e50",
   "France":"#2980b9","United Kingdom":"#16a085","Sweden":"#27ae60","Japan":"#d35400"
 };
-
-const BH_BAR_COUNTRIES  = ["Sweden","Malta","Switzerland","Portugal","Latvia","Hungary","United Kingdom","France"];
-const BH_LINE_COUNTRIES = ["France","United Kingdom","Sweden","Portugal"];
-const BH_LINE_LABELS    = {"United Kingdom":"UK"};
 const BH_COLORS = {
   "France":"#e67e22","United Kingdom":"#e74c3c","Sweden":"#9b59b6","Portugal":"#c0392b"
 };
-
-const ALL_YEARS = ["2014","2015","2016","2017","2018","2019","2020","2021","2022","2023"];
-const BH_YEARS  = ["2018","2019","2020","2021","2022","2023"];
 
 // ── Tooltip ───────────────────────────────────────────────────────
 const tip = document.getElementById("tooltip");
@@ -139,20 +155,38 @@ function gridlines(g,axFn,len){
    .call(gr=>{gr.select(".domain").remove();gr.selectAll("line").attr("stroke","#e0ddd8").attr("stroke-dasharray","3,3");});
 }
 
+// ── Label collision avoidance ─────────────────────────────────────
+function resolveLabels(slots,gap){
+  slots.sort((a,b)=>a.y-b.y);
+  for(let pass=0;pass<30;pass++){
+    let moved=false;
+    for(let i=1;i<slots.length;i++){
+      const needed=slots[i-1].y+slots[i-1].h+gap;
+      if(slots[i].y<needed){slots[i].y=needed;moved=true;}
+    }
+    if(!moved) break;
+  }
+  return slots;
+}
+
 // ── WHITE BAR ─────────────────────────────────────────────────────
-// Data transformation: also computes per-country % change badge shown in tooltip
-function drawWhiteBar(){
+function drawWhiteBar(byCountryYear){
+  // Build 2023 snapshot and compute % change from 2014 for each country
   const data = Object.keys(byCountryYear)
-    .filter(c=>byCountryYear[c]["2023"]!=null)
-    .map(c=>({country:c, value:byCountryYear[c]["2023"], pct:PCT_CHANGE[c]||null}))
+    .filter(c => byCountryYear[c][2023] != null)
+    .map(c => {
+      const v2023 = byCountryYear[c][2023];
+      const v2014 = byCountryYear[c][2014];
+      const pct = (v2014 != null) ? Math.round(((v2023 - v2014) / v2014) * 1000) / 10 : null;
+      return {country:c, value:v2023, pct};
+    })
     .sort((a,b)=>b.value-a.value);
 
   const maxVal = data[0].value;
   const {g,W,H} = makeSvg("white-bar",960,420,{l:66,r:20,t:24,b:128});
-
   const x = d3.scaleBand().domain(data.map(d=>d.country)).range([0,W]).padding(0.2);
   const y = d3.scaleLinear().domain([0,maxVal*1.08]).range([H,0]);
-  const colFn = v=>d3.interpolateRdYlGn(1-v/maxVal);
+  const colFn = v => d3.interpolateRdYlGn(1-v/maxVal);
 
   gridlines(g,d3.axisLeft(y).ticks(6),W);
 
@@ -167,7 +201,7 @@ function drawWhiteBar(){
     })
     .on("mouseleave",hideTip);
 
-  // Average reference line (computed from filtered dataset)
+  // Average reference line computed from the filtered dataset
   const avg = d3.mean(data,d=>d.value);
   g.append("line").attr("x1",0).attr("x2",W).attr("y1",y(avg)).attr("y2",y(avg))
     .attr("stroke","#2c3e50").attr("stroke-dasharray","6,3").attr("stroke-width",1.5);
@@ -186,34 +220,19 @@ function drawWhiteBar(){
     .text("kg CO\u2082-equivalent per person (2023)");
 }
 
-// ── LABEL COLLISION AVOIDANCE ────────────────────────────────────
-// Nudges an array of {y, h} label slots apart so none overlap.
-// Preserves relative order. Runs up to 30 passes.
-function resolveLabels(slots, gap) {
-  slots.sort((a,b) => a.y - b.y);
-  for (let pass = 0; pass < 30; pass++) {
-    let moved = false;
-    for (let i = 1; i < slots.length; i++) {
-      const needed = slots[i-1].y + slots[i-1].h + gap;
-      if (slots[i].y < needed) { slots[i].y = needed; moved = true; }
-    }
-    if (!moved) break;
-  }
-  return slots;
-}
-
 // ── WHITE LINE ────────────────────────────────────────────────────
-// Data transformation: computes % change 2014→2023 per country and
-// annotates each line end-label. Labels use collision avoidance so
-// tightly-spaced lines never produce overlapping text.
-function drawWhiteLine(){
-  const countries = LINE_COUNTRIES.filter(c=>
-    byCountryYear[c] && ALL_YEARS.every(y=>byCountryYear[c][y]!=null)
+function drawWhiteLine(byCountryYear){
+  const allYears = [2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
+
+  // Only include countries that have data for every year in the range
+  const countries = LINE_COUNTRIES.filter(c =>
+    byCountryYear[c] && allYears.every(yr => byCountryYear[c][yr] != null)
   );
 
-  let maxVal=0;
-  for(const c of countries) for(const yr of ALL_YEARS)
-    if(byCountryYear[c][yr]>maxVal) maxVal=byCountryYear[c][yr];
+  let maxVal = 0;
+  for(const c of countries)
+    for(const yr of allYears)
+      if(byCountryYear[c][yr] > maxVal) maxVal = byCountryYear[c][yr];
 
   const {g,W,H} = makeSvg("white-line",960,380,{l:68,r:175,t:24,b:50});
   const x = d3.scaleLinear().domain([2014,2023]).range([0,W]);
@@ -222,39 +241,41 @@ function drawWhiteLine(){
 
   gridlines(g,d3.axisLeft(y).ticks(6),W);
 
-  // Draw lines and dots first (labels drawn after collision resolve)
   const series = countries.map(country => {
-    const pts = ALL_YEARS.map(yr=>({yr:+yr,val:byCountryYear[country][yr]}));
+    const pts = allYears.map(yr=>({yr, val:byCountryYear[country][yr]}));
     const col = LINE_COLORS[country]||"#888";
+    // Compute % change from 2014 to 2023 from actual CSV values
+    const v2014 = byCountryYear[country][2014];
+    const v2023 = byCountryYear[country][2023];
+    const pct = (v2014 != null && v2023 != null)
+      ? Math.round(((v2023 - v2014) / v2014) * 1000) / 10
+      : null;
+
     g.append("path").datum(pts).attr("fill","none").attr("stroke",col)
       .attr("stroke-width",2.2).attr("d",lineGen);
     g.selectAll(".dot"+country.replace(/[\s()]/g,"_")).data(pts).enter().append("circle")
       .attr("cx",d=>x(d.yr)).attr("cy",d=>y(d.val)).attr("r",3).attr("fill",col)
       .on("mousemove",(evt,d)=>showTip("<b>"+country+"</b><br>"+d.yr+": "+d.val.toFixed(2)+" kg CO\u2082e",evt))
       .on("mouseleave",hideTip);
-    return { country, col, pts, pct: PCT_CHANGE[country]||null,
-             idealY: y(byCountryYear[country]["2023"]) };
+
+    return {country, col, pts, pct, idealY: y(v2023)};
   });
 
-  // Each label block: country name 10px + pct 9px = ~22px tall
+  // Collision-resolve end labels (name 10px + pct 9px = ~22px block)
   const BLOCK_H = 22;
-  const slots = series.map(s => ({ y: s.idealY - 4, h: BLOCK_H }));
-  resolveLabels(slots, 3);
+  const slots = series.map(s=>({y:s.idealY-4, h:BLOCK_H}));
+  resolveLabels(slots,3);
 
-  // Draw connector lines and labels at collision-resolved positions
-  series.forEach((s, i) => {
+  series.forEach((s,i)=>{
     const lx = x(2023);
     const sy = slots[i].y;
-    // Thin connector from line end to label anchor
     g.append("line")
       .attr("x1",lx+3).attr("x2",lx+7)
       .attr("y1",s.idealY).attr("y2",sy+8)
       .attr("stroke",s.col).attr("stroke-width",0.8).attr("opacity",0.45);
-    // Country name
     g.append("text").attr("x",lx+9).attr("y",sy+8)
       .style("font-size","10px").style("fill",s.col).style("font-weight","600")
       .text(s.country);
-    // Percent change
     if(s.pct!=null){
       g.append("text").attr("x",lx+9).attr("y",sy+19)
         .style("font-size","9px").style("fill",s.col).style("opacity","0.72")
@@ -271,11 +292,11 @@ function drawWhiteLine(){
     .text("kg CO\u2082-equivalent per person");
 }
 
-// ── BLACK BAR (⚠ misleading) ──────────────────────────────────────
-function drawBlackBar(){
+// ── BLACK BAR (misleading) ────────────────────────────────────────
+function drawBlackBar(byCountryYear){
   const data = BH_BAR_COUNTRIES
-    .filter(c=>byCountryYear[c]&&byCountryYear[c]["2023"]!=null)
-    .map(c=>({country:c,value:byCountryYear[c]["2023"]}))
+    .filter(c => byCountryYear[c] && byCountryYear[c][2023] != null)
+    .map(c => ({country:c, value:byCountryYear[c][2023]}))
     .sort((a,b)=>a.value-b.value);
 
   const {g,W,H} = makeSvg("black-bar",640,340,{l:74,r:20,t:36,b:72});
@@ -308,13 +329,17 @@ function drawBlackBar(){
     .text("kg CO\u2082-equivalent per person (2023)");
 }
 
-// ── BLACK LINE (⚠ misleading) ─────────────────────────────────────
-// Labels also use collision avoidance so France/UK don't overlap.
-function drawBlackLine(){
+// ── BLACK LINE (misleading) ───────────────────────────────────────
+function drawBlackLine(byCountryYear){
+  const bhYears = [2018,2019,2020,2021,2022,2023];
+
   const series = BH_LINE_COUNTRIES
-    .filter(c=>byCountryYear[c]&&BH_YEARS.every(y=>byCountryYear[c][y]!=null))
-    .map(c=>({country:c,label:BH_LINE_LABELS[c]||c,
-      pts:BH_YEARS.map(yr=>({yr:+yr,val:byCountryYear[c][yr]}))}));
+    .filter(c => byCountryYear[c] && bhYears.every(yr => byCountryYear[c][yr] != null))
+    .map(c => ({
+      country:c,
+      label: BH_LINE_LABELS[c]||c,
+      pts: bhYears.map(yr=>({yr, val:byCountryYear[c][yr]}))
+    }));
 
   const allVals = series.flatMap(s=>s.pts.map(p=>p.val));
   const yMin = d3.min(allVals)*0.95, yMax = d3.max(allVals)*1.03;
@@ -326,7 +351,6 @@ function drawBlackLine(){
 
   gridlines(g,d3.axisLeft(y).ticks(5),W);
 
-  // Draw lines and dots first
   for(const {country,label,pts} of series){
     const col = BH_COLORS[country]||"#888";
     g.append("path").datum(pts).attr("fill","none").attr("stroke",col)
@@ -337,20 +361,16 @@ function drawBlackLine(){
       .on("mouseleave",hideTip);
   }
 
-  // Collision-resolve end labels (label height ~13px for single-line labels)
+  // Collision-resolve end labels
   const BLOCK_H = 13;
-  const slots = series.map(s => ({
-    y: y(s.pts[s.pts.length-1].val) - 4,
-    h: BLOCK_H
-  }));
-  resolveLabels(slots, 3);
+  const slots = series.map(s=>({y:y(s.pts[s.pts.length-1].val)-4, h:BLOCK_H}));
+  resolveLabels(slots,3);
 
-  series.forEach((s, i) => {
+  series.forEach((s,i)=>{
     const col = BH_COLORS[s.country]||"#888";
     const lx = x(2023);
     const endY = y(s.pts[s.pts.length-1].val);
     const sy = slots[i].y;
-    // Thin connector
     g.append("line")
       .attr("x1",lx+3).attr("x2",lx+7)
       .attr("y1",endY).attr("y2",sy+8)
@@ -373,11 +393,27 @@ function drawBlackLine(){
     .text("kg CO\u2082-equivalent per person");
 }
 
-// ── RUN ───────────────────────────────────────────────────────────
-drawWhiteBar();
-drawWhiteLine();
-drawBlackBar();
-drawBlackLine();
+// ── LOAD CSV THEN DRAW EVERYTHING ────────────────────────────────
+d3.csv(CSV_PATH).then(raw => {
+  // Filter to individual countries only (3-letter ISO codes, skip OECD/EU aggregates)
+  // Build a lookup: byCountryYear[countryName][year] = value
+  const byCountryYear = {};
+  raw
+    .filter(d => d["REF_AREA"].length === 3 && d["OBS_VALUE"] !== "")
+    .forEach(d => {
+      const country = d["Reference area"];
+      const year    = +d["TIME_PERIOD"];
+      const value   = +d["OBS_VALUE"];
+      if(!byCountryYear[country]) byCountryYear[country] = {};
+      byCountryYear[country][year] = value;
+    });
+
+  drawWhiteBar(byCountryYear);
+  drawWhiteLine(byCountryYear);
+  drawBlackBar(byCountryYear);
+  drawBlackLine(byCountryYear);
+});
+
 </script>
 </body>
 </html>
