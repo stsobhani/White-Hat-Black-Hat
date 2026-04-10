@@ -10,7 +10,7 @@ It presents two contrasting approaches:
 
 ## Live Website
 
-[https://stsobhani.github.io/White-Hat-Black-Hat/index.html](https://stsobhani.github.io/White-Hat-Black-Hat/)
+https://stsobhani.github.io/White-Hat-Black-Hat/
 
 ---
 
